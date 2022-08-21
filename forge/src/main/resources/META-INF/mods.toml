@@ -4,7 +4,7 @@ license="LGPLv3"
 issueTrackerURL="https://github.com/slymask3/instantblocks-core/issues"
 
 [[mods]]
-modId="instantblocks-core"
+modId="instantblocks_core"
 version="0.1.0"
 displayName="Instant Blocks: Core"
 updateJSONURL="https://raw.githubusercontent.com/slymask3/instant-blocks/1.19.x/update.json"
@@ -14,13 +14,13 @@ credits="Slymask3"
 authors="Slymask3"
 description="Generate structures or perform actions instantaneously."
 
-[[dependencies.instantblocks-core]]
+[[dependencies.instantblocks_core]]
     modId="forge"
     mandatory=true
     versionRange="[39,)"
     ordering="NONE"
     side="BOTH"
-[[dependencies.instantblocks-core]]
+[[dependencies.instantblocks_core]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.19,1.20)"

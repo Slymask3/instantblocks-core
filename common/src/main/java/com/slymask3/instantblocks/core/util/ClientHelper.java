@@ -1,6 +1,6 @@
 package com.slymask3.instantblocks.core.util;
 
-import com.slymask3.instantblocks.core.Common;
+import com.slymask3.instantblocks.core.Core;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
@@ -33,7 +33,7 @@ public class ClientHelper {
                         }
                     }
                 }
-                playSound(player, pos, new SoundEvent(new ResourceLocation("minecraft", Common.CONFIG.SOUND_GENERATE())), 0.4F);
+                playSound(player, pos, new SoundEvent(new ResourceLocation("minecraft", Core.CONFIG.SOUND_GENERATE())), 0.4F);
             }
             case NO_LIQUID -> {
                 addParticle(world,pos,ParticleTypes.SMOKE,0.5D,1.2D,0.5D);
@@ -42,7 +42,7 @@ public class ClientHelper {
                 addParticle(world,pos,ParticleTypes.SMOKE,0.5D,-0.2D,0.5D);
                 addParticle(world,pos,ParticleTypes.SMOKE,-0.2D,0.5D,0.5D);
                 addParticle(world,pos,ParticleTypes.SMOKE,0.5D,0.5D,-0.2D);
-                playSound(player, pos, new SoundEvent(new ResourceLocation("minecraft", Common.CONFIG.SOUND_NO_LIQUID())), 0.4F);
+                playSound(player, pos, new SoundEvent(new ResourceLocation("minecraft", Core.CONFIG.SOUND_NO_LIQUID())), 0.4F);
             }
             case PLACE_BLOCK -> addParticle(world,pos, ParticleTypes.ENCHANT,0.5D,0.5D,0.5D);
             case CLEAR_BLOCK -> addParticle(world,pos, ParticleTypes.LAVA,0.5D,0.5D,0.5D);
@@ -50,13 +50,13 @@ public class ClientHelper {
     }
 
     private static void addParticle(Level world, BlockPos pos, ParticleOptions particle, double x, double y, double z) {
-        if(Common.CONFIG.SHOW_EFFECTS()) {
+        if(Core.CONFIG.SHOW_EFFECTS()) {
             world.addParticle(particle, (double)pos.getX() + x, (double)pos.getY() + y, (double)pos.getZ() + z, 0.0D, 0.0D, 0.0D);
         }
     }
 
     public static void sendMessage(Player player, String message, String variable) {
-        if(Common.CONFIG.SHOW_MESSAGES() && Helper.isClient(player.getLevel())) {
+        if(Core.CONFIG.SHOW_MESSAGES() && Helper.isClient(player.getLevel())) {
             player.displayClientMessage(Component.translatable(message, variable.isEmpty() ? new Object[0] : variable),true);
         }
     }

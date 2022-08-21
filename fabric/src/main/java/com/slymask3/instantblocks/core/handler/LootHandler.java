@@ -1,6 +1,6 @@
 package com.slymask3.instantblocks.core.handler;
 
-import com.slymask3.instantblocks.core.Common;
+import com.slymask3.instantblocks.core.Core;
 import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -14,16 +14,16 @@ public class LootHandler {
     public static void register() {
         LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, source) -> {
             String name = id.toString();
-            if(Common.CONFIG.GENERATE_IN_CHESTS_BONUS() && name.equals("minecraft:chests/spawn_bonus_chest")) {
+            if(Core.CONFIG.GENERATE_IN_CHESTS_BONUS() && name.equals("minecraft:chests/spawn_bonus_chest")) {
                 tableBuilder.pool(injectPool(STARTER));
             }
-            if(Common.CONFIG.GENERATE_IN_CHESTS() && name.contains("minecraft:chests/") && !name.equals("minecraft:chests/spawn_bonus_chest")) {
+            if(Core.CONFIG.GENERATE_IN_CHESTS() && name.contains("minecraft:chests/") && !name.equals("minecraft:chests/spawn_bonus_chest")) {
                 tableBuilder.pool(injectPool(BLOCKS));
             }
         });
     }
 
     private static LootPool injectPool(String name) {
-        return LootPool.lootPool().add(LootTableReference.lootTableReference(new ResourceLocation(Common.MOD_ID, "inject/" + name)).setWeight(1)).setBonusRolls(UniformGenerator.between(0, 1)).build();
+        return LootPool.lootPool().add(LootTableReference.lootTableReference(new ResourceLocation(Core.FABRIC_MOD_ID, "inject/" + name)).setWeight(1)).setBonusRolls(UniformGenerator.between(0, 1)).build();
     }
 }

@@ -1,6 +1,6 @@
 package com.slymask3.instantblocks.core.block;
 
-import com.slymask3.instantblocks.core.Common;
+import com.slymask3.instantblocks.core.Core;
 import com.slymask3.instantblocks.core.builder.Builder;
 import com.slymask3.instantblocks.core.util.ClientHelper;
 import com.slymask3.instantblocks.core.util.Helper;
@@ -76,7 +76,7 @@ public abstract class InstantBlock extends Block {
 		if(Builder.inProgress(world,pos)) {
 			return InteractionResult.SUCCESS;
 		}
-		Common.CONFIG.reload();
+		Core.CONFIG.reload();
 		return screen == null ? onActivate(world,pos,player,hand) : onActivateGui(world,pos,player,hand);
 	}
 
@@ -107,11 +107,11 @@ public abstract class InstantBlock extends Block {
 			}
 
 			ItemStack is = player.getItemInHand(hand);
-			if(Common.CONFIG.USE_WANDS()) {
+			if(Core.CONFIG.USE_WANDS()) {
 				if(!Helper.isWand(is)) {
 					Helper.sendMessage(player, Strings.ERROR_WAND);
 					return InteractionResult.FAIL;
-				} else if(!player.isCreative() && !Common.CONFIG.WAND_OVER_DURABILITY() && Helper.wandDamage(Helper.getBlock(world,pos)) > is.getMaxDamage() - is.getDamageValue()) {
+				} else if(!player.isCreative() && !Core.CONFIG.WAND_OVER_DURABILITY() && Helper.wandDamage(Helper.getBlock(world,pos)) > is.getMaxDamage() - is.getDamageValue()) {
 					Helper.sendMessage(player, Strings.ERROR_WAND_DURABILITY);
 					return InteractionResult.FAIL;
 				}
@@ -140,11 +140,11 @@ public abstract class InstantBlock extends Block {
 		}
 
 		ItemStack is = player.getItemInHand(hand);
-		if(Common.CONFIG.USE_WANDS()) {
+		if(Core.CONFIG.USE_WANDS()) {
 			if(!Helper.isWand(is)) {
 				Helper.sendMessage(player, Strings.ERROR_WAND);
 				return InteractionResult.FAIL;
-			} else if(!player.isCreative() && !Common.CONFIG.WAND_OVER_DURABILITY() && Helper.wandDamage(Helper.getBlock(world,pos)) > is.getMaxDamage() - is.getDamageValue()) {
+			} else if(!player.isCreative() && !Core.CONFIG.WAND_OVER_DURABILITY() && Helper.wandDamage(Helper.getBlock(world,pos)) > is.getMaxDamage() - is.getDamageValue()) {
 				Helper.sendMessage(player, Strings.ERROR_WAND_DURABILITY);
 				return InteractionResult.FAIL;
 			}
@@ -178,8 +178,8 @@ public abstract class InstantBlock extends Block {
 	private void afterBuild(Level world, BlockPos pos, Player player) {
 		Helper.sendMessage(player,this.createMessage,this.createVariable);
 		Helper.showParticles(world, pos, ClientHelper.Particles.GENERATE);
-		Helper.giveExp(world, player, Common.CONFIG.XP_AMOUNT());
-		if(Common.CONFIG.USE_WANDS()) {
+		Helper.giveExp(world, player, Core.CONFIG.XP_AMOUNT());
+		if(Core.CONFIG.USE_WANDS()) {
 			ItemStack is = player.getItemInHand(InteractionHand.MAIN_HAND);
 			if(Helper.isWand(is)) {
 				is.hurtAndBreak(Helper.wandDamage(this), player, (entity) -> {

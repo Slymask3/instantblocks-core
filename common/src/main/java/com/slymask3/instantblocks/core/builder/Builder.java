@@ -1,6 +1,6 @@
 package com.slymask3.instantblocks.core.builder;
 
-import com.slymask3.instantblocks.core.Common;
+import com.slymask3.instantblocks.core.Core;
 import com.slymask3.instantblocks.core.block.InstantBlock;
 import com.slymask3.instantblocks.core.builder.type.Single;
 import com.slymask3.instantblocks.core.network.packet.client.SoundPacket;
@@ -99,7 +99,7 @@ public class Builder {
 					this.handle(buildSounds);
 				}
 				if(!buildSounds.isEmpty()) {
-					Common.NETWORK.sendToAllAround(world,firstBlockPos,new SoundPacket(buildSounds));
+					Core.NETWORK.sendToAllAround(world,firstBlockPos,new SoundPacket(buildSounds));
 				}
 				if(queue.isEmpty()) {
 					this.status = Status.DONE;

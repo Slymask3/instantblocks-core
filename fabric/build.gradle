@@ -8,7 +8,7 @@ repositories {
     maven { url = 'https://maven.terraformersmc.com/' }
 }
 
-archivesBaseName = "${mod_id}"
+archivesBaseName = "${mod_base}-${mod_addon}"
 version = "${mod_version}-fabric-${minecraft_version}"
 
 dependencies {

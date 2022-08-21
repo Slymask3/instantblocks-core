@@ -1,6 +1,6 @@
 package com.slymask3.instantblocks.core.builder.type;
 
-import com.slymask3.instantblocks.core.Common;
+import com.slymask3.instantblocks.core.Core;
 import com.slymask3.instantblocks.core.builder.BlockType;
 import com.slymask3.instantblocks.core.builder.Builder;
 import com.slymask3.instantblocks.core.util.ColorHelper;
@@ -72,7 +72,7 @@ public abstract class Base<T extends Base<T>> {
     }
 
     protected void setPriority(int priority) {
-        this.priority = Common.CONFIG.ORIGINAL_INSTANT() ? 0 : priority;
+        this.priority = Core.CONFIG.ORIGINAL_INSTANT() ? 0 : priority;
     }
 
     public void queue() {

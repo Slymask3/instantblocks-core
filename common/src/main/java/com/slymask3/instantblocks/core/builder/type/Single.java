@@ -1,6 +1,6 @@
 package com.slymask3.instantblocks.core.builder.type;
 
-import com.slymask3.instantblocks.core.Common;
+import com.slymask3.instantblocks.core.Core;
 import com.slymask3.instantblocks.core.block.InstantBlock;
 import com.slymask3.instantblocks.core.builder.BlockType;
 import com.slymask3.instantblocks.core.builder.BuildSound;
@@ -81,10 +81,10 @@ public class Single extends Base<Single> {
             }
             return;
         }
-        if(Common.CONFIG.KEEP_BLOCKS() && getBlock instanceof InstantBlock) {
+        if(Core.CONFIG.KEEP_BLOCKS() && getBlock instanceof InstantBlock) {
             return;
         }
-        if(Helper.isNether(world) && block.equals(Blocks.WATER) && !Common.CONFIG.ALLOW_WATER_IN_NETHER()) {
+        if(Helper.isNether(world) && block.equals(Blocks.WATER) && !Core.CONFIG.ALLOW_WATER_IN_NETHER()) {
             state = Blocks.AIR.defaultBlockState(); //replace water with air in the nether
         }
         if(canSet(getBlock)) {

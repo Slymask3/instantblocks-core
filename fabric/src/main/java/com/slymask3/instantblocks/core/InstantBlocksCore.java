@@ -2,7 +2,7 @@ package com.slymask3.instantblocks.core;
 
 import com.slymask3.instantblocks.core.builder.Builder;
 import com.slymask3.instantblocks.core.config.ClothConfig;
-import com.slymask3.instantblocks.core.core.ModItems;
+import com.slymask3.instantblocks.core.registry.CoreItems;
 import com.slymask3.instantblocks.core.handler.LootHandler;
 import com.slymask3.instantblocks.core.init.IRegistryHelper;
 import com.slymask3.instantblocks.core.init.Registration;
@@ -26,15 +26,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class InstantBlocks implements ModInitializer {
+public class InstantBlocksCore implements ModInitializer {
     @Override
     public void onInitialize() {
-        Common.ITEM_GROUP = FabricItemGroupBuilder.build(new ResourceLocation(Common.MOD_ID, "general"), () -> new ItemStack(ModItems.WAND_IRON));
-        Common.NETWORK = new PacketHandler();
+        Core.ITEM_GROUP = FabricItemGroupBuilder.build(new ResourceLocation(Core.MOD_BASE, "general"), () -> new ItemStack(CoreItems.WAND_IRON));
+        Core.NETWORK = new PacketHandler();
 
         if(Services.PLATFORM.isModLoaded("cloth-config")) {
             ClothConfig.register();
-            Common.CONFIG = ClothConfig.get();
+            Core.CONFIG = ClothConfig.get();
         }
 
         Registration.registerItems(new FabricRegistryHelper<>(Registry.ITEM));
@@ -43,7 +43,7 @@ public class InstantBlocks implements ModInitializer {
         PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, entity) -> !Builder.inProgress(world,pos));
 
         LootHandler.register();
-        Common.init();
+        Core.init();
     }
 
     public static class FabricRegistryHelper<T> implements IRegistryHelper<T> {

@@ -3,7 +3,7 @@ package com.slymask3.instantblocks.core;
 import com.slymask3.instantblocks.core.builder.Builder;
 import com.slymask3.instantblocks.core.config.ClothConfig;
 import com.slymask3.instantblocks.core.config.ForgeConfig;
-import com.slymask3.instantblocks.core.core.ModItems;
+import com.slymask3.instantblocks.core.registry.CoreItems;
 import com.slymask3.instantblocks.core.init.IRegistryHelper;
 import com.slymask3.instantblocks.core.init.Registration;
 import com.slymask3.instantblocks.core.network.ForgePacketHandler;
@@ -32,18 +32,18 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegisterEvent;
 import org.jetbrains.annotations.NotNull;
 
-@Mod(Common.MOD_ID)
-public class InstantBlocks {
-	public InstantBlocks() {
-		Common.ITEM_GROUP = new CreativeModeTab(CreativeModeTab.TABS.length,Common.MOD_ID) { public @NotNull ItemStack makeIcon() { return new ItemStack(ModItems.WAND_IRON); } };
-		Common.NETWORK = new PacketHandler();
+@Mod(Core.FORGE_MOD_ID)
+public class InstantBlocksCore {
+	public InstantBlocksCore() {
+		Core.ITEM_GROUP = new CreativeModeTab(CreativeModeTab.TABS.length, Core.MOD_BASE) { public @NotNull ItemStack makeIcon() { return new ItemStack(CoreItems.WAND_IRON); } };
+		Core.NETWORK = new PacketHandler();
 
 		if(Services.PLATFORM.isModLoaded("cloth_config")) {
 			ClothConfig.register();
-			Common.CONFIG = ClothConfig.get();
+			Core.CONFIG = ClothConfig.get();
 		} else {
 			ForgeConfig.init();
-			Common.CONFIG = new ForgeConfig();
+			Core.CONFIG = new ForgeConfig();
 		}
 
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -57,7 +57,7 @@ public class InstantBlocks {
 
 	private void setupCommon(final FMLCommonSetupEvent event) {
 		ForgePacketHandler.register();
-		Common.init();
+		Core.init();
 	}
 
 	private void setupRegistry(final RegisterEvent event) {

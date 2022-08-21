@@ -20,10 +20,10 @@
     "environment": "*",
     "entrypoints": {
       "main": [
-        "com.slymask3.instantblocks.core.InstantBlocks"
+        "com.slymask3.instantblocks.core.InstantBlocksCore"
       ],
       "client": [
-        "com.slymask3.instantblocks.core.InstantBlocksClient"
+        "com.slymask3.instantblocks.core.InstantBlocksCoreClient"
       ],
       "modmenu": [
         "com.slymask3.instantblocks.core.handler.ModMenuIntegration"

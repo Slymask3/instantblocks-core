@@ -1,6 +1,6 @@
 package com.slymask3.instantblocks.core.util;
 
-import com.slymask3.instantblocks.core.Common;
+import com.slymask3.instantblocks.core.Core;
 import com.slymask3.instantblocks.core.builder.BuildSound;
 import com.slymask3.instantblocks.core.item.InstantWandItem;
 import com.slymask3.instantblocks.core.network.packet.client.MessagePacket;
@@ -52,7 +52,7 @@ public class Helper {
 	}
 
 	public static void playSound(Player player, SoundEvent sound, float volume) {
-		Common.NETWORK.sendToClient(player,new SoundPacket(List.of(new BuildSound(player.getOnPos(), sound,null,volume,ClientHelper.Particles.NONE))));
+		Core.NETWORK.sendToClient(player,new SoundPacket(List.of(new BuildSound(player.getOnPos(), sound,null,volume,ClientHelper.Particles.NONE))));
 	}
 
 	public static void addToChest(ChestBlockEntity chest, Block block, int amount) {
@@ -115,18 +115,6 @@ public class Helper {
 		return chest.getContainerSize() == 54;
 	}
 
-	public static int getMinSkydive(Level world) {
-		int min = Common.CONFIG.SKYDIVE_MIN();
-		int min_world = world.getMinBuildHeight();
-		return min < min_world + 4 ? min_world + 5 : min;
-	}
-
-	public static int getMaxSkydive(Level world) {
-		int max = Common.CONFIG.SKYDIVE_MAX();
-		int max_world = isNether(world) ? 120 : world.getMaxBuildHeight();
-		return max > max_world - 3 ? max_world - 4 : max;
-	}
-
 	public static boolean isNether(Level world) {
 		return world.dimension().equals(Level.NETHER);
 	}
@@ -141,13 +129,13 @@ public class Helper {
 
 	public static void sendMessage(Player player, String message, String variable) {
 		if(isServer(player.getLevel())) {
-			Common.NETWORK.sendToClient(player, new MessagePacket(message,variable));
+			Core.NETWORK.sendToClient(player, new MessagePacket(message,variable));
 		}
 	}
 
 	public static void showParticles(Level world, BlockPos pos, ClientHelper.Particles particles) {
 		if(isServer(world)) {
-			Common.NETWORK.sendToAllAround(world, pos, new ParticlePacket(pos,particles.ordinal()));
+			Core.NETWORK.sendToAllAround(world, pos, new ParticlePacket(pos,particles.ordinal()));
 		}
 	}
 
@@ -217,7 +205,7 @@ public class Helper {
 			try {
 				dir.mkdir();
 			} catch(SecurityException se) {
-				Common.LOG.error("Failed to create '" + directory + "' directory: " + se.getMessage());
+				Core.LOG.error("Failed to create '" + directory + "' directory: " + se.getMessage());
 			}
 		}
 	}
@@ -240,7 +228,7 @@ public class Helper {
 
 	public static boolean canPlaceTorch(Level world, BlockPos pos) {
 		return world.getBlockState(pos).getBlock().equals(Blocks.AIR)
-				&& world.getRawBrightness(pos,0) <= Common.CONFIG.LIGHT_MAX()
+				&& world.getRawBrightness(pos,0) <= Core.CONFIG.LIGHT_MAX()
 				&& (world.getBlockState(pos.below()).isFaceSturdy(world,pos, Direction.UP)
 				|| world.getBlockState(pos.north()).isFaceSturdy(world,pos,Direction.SOUTH)
 				|| world.getBlockState(pos.east()).isFaceSturdy(world,pos,Direction.WEST)

@@ -1,10 +1,10 @@
-package com.slymask3.instantblocks.core.core;
+package com.slymask3.instantblocks.core.registry;
 
 import com.slymask3.instantblocks.core.item.InstantWandItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tiers;
 
-public class ModItems {
+public class CoreItems {
     public static Item WAND_WOOD;
     public static Item WAND_STONE;
     public static Item WAND_IRON;

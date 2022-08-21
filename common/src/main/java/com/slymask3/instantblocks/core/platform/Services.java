@@ -1,6 +1,6 @@
 package com.slymask3.instantblocks.core.platform;
 
-import com.slymask3.instantblocks.core.Common;
+import com.slymask3.instantblocks.core.Core;
 import com.slymask3.instantblocks.core.platform.services.IPlatformHelper;
 
 import java.util.ServiceLoader;
@@ -12,7 +12,7 @@ public class Services {
         final T loadedService = ServiceLoader.load(clazz)
                 .findFirst()
                 .orElseThrow(() -> new NullPointerException("Failed to load service for " + clazz.getName()));
-        Common.LOG.debug("Loaded {} for service {}", loadedService, clazz);
+        Core.LOG.debug("Loaded {} for service {}", loadedService, clazz);
         return loadedService;
     }
 }
