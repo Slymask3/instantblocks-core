@@ -1,9 +1,9 @@
 package com.slymask3.instantblocks.core.network.packet.client;
 
 import com.slymask3.instantblocks.core.builder.BuildSound;
-import com.slymask3.instantblocks.core.network.PacketHelper;
-import com.slymask3.instantblocks.core.util.ClientHelper;
+import com.slymask3.instantblocks.core.network.CorePacketHelper;
 import com.slymask3.instantblocks.core.network.packet.AbstractPacket;
+import com.slymask3.instantblocks.core.util.ClientHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -16,7 +16,7 @@ public class SoundPacket extends AbstractPacket {
 	public final List<BuildSound> buildSounds;
 
 	public SoundPacket(List<BuildSound> buildSounds) {
-		super(PacketHelper.PacketID.SOUND);
+		super(CorePacketHelper.PACKET_SOUND);
 		this.buildSounds = buildSounds;
 	}
 

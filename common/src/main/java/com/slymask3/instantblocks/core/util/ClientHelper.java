@@ -1,6 +1,8 @@
 package com.slymask3.instantblocks.core.util;
 
 import com.slymask3.instantblocks.core.Core;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
@@ -13,7 +15,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 public class ClientHelper {
-    public enum Screen { STATUE, HARVEST, SKYDIVE, SCHEMATIC, TREE }
     public enum Particles { NONE, GENERATE, NO_LIQUID, PLACE_BLOCK, CLEAR_BLOCK }
 
     public static void playSound(Player player, BlockPos pos, SoundEvent sound, float volume) {
@@ -61,16 +62,7 @@ public class ClientHelper {
         }
     }
 
-    //todo
-    public static void showScreen(Screen screen, Player player, Level world, BlockPos pos) {
-        if(Helper.isClient(world)) {
-//            switch(screen) {
-//                case SKYDIVE -> Minecraft.getInstance().setScreen(new SkydiveScreen(player,world,pos));
-//                case STATUE -> Minecraft.getInstance().setScreen(new StatueScreen(player,world,pos));
-//                case HARVEST -> Minecraft.getInstance().setScreen(new HarvestScreen(player,world,pos));
-//                case TREE -> Minecraft.getInstance().setScreen(new TreeScreen(player,world,pos));
-//                case SCHEMATIC -> Minecraft.getInstance().setScreen(new SchematicScreen(player,world,pos));
-//            }
-        }
+    public static void showScreen(Screen screen) {
+        Minecraft.getInstance().setScreen(screen);
     }
 }

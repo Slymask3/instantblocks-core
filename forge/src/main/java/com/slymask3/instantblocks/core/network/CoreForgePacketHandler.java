@@ -18,7 +18,7 @@ import net.minecraftforge.network.simple.SimpleChannel;
 
 import java.util.function.Supplier;
 
-public class ForgePacketHandler {
+public class CoreForgePacketHandler {
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(Core.FABRIC_MOD_ID,"main"), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
 
@@ -44,11 +44,11 @@ public class ForgePacketHandler {
             Player player = Minecraft.getInstance().player;
             if(player != null) {
                 if(message.getClass().equals(MessagePacket.class)) {
-                    PacketHelper.handleMessage((MessagePacket)message, player);
+                    CorePacketHelper.handleMessage((MessagePacket)message, player);
                 } else if(message.getClass().equals(ParticlePacket.class)) {
-                    PacketHelper.handleParticle((ParticlePacket)message, player);
+                    CorePacketHelper.handleParticle((ParticlePacket)message, player);
                 } else if(message.getClass().equals(SoundPacket.class)) {
-                    PacketHelper.handleSound((SoundPacket)message, player);
+                    CorePacketHelper.handleSound((SoundPacket)message, player);
                 }
             }
         }

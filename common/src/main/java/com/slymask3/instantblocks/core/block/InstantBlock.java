@@ -2,9 +2,9 @@ package com.slymask3.instantblocks.core.block;
 
 import com.slymask3.instantblocks.core.Core;
 import com.slymask3.instantblocks.core.builder.Builder;
+import com.slymask3.instantblocks.core.reference.Strings;
 import com.slymask3.instantblocks.core.util.ClientHelper;
 import com.slymask3.instantblocks.core.util.Helper;
-import com.slymask3.instantblocks.core.reference.Strings;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,7 +26,7 @@ public abstract class InstantBlock extends Block {
 
 	protected String createMessage, errorMessage, createVariable, errorVariable;
 	private boolean isDirectional = false;
-	private ClientHelper.Screen screen = null;
+	private boolean has_screen = false;
 	
 	protected InstantBlock(Properties properties) {
 		super(properties);
@@ -58,8 +58,8 @@ public abstract class InstantBlock extends Block {
 		}
 	}
 
-	public void setScreen(ClientHelper.Screen screen) {
-		this.screen = screen;
+	public void hasScreen() {
+		this.has_screen = true;
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public abstract class InstantBlock extends Block {
 			return InteractionResult.SUCCESS;
 		}
 		Core.CONFIG.reload();
-		return screen == null ? onActivate(world,pos,player,hand) : onActivateGui(world,pos,player,hand);
+		return !this.has_screen ? onActivate(world,pos,player,hand) : onActivateGui(world,pos,player,hand);
 	}
 
 	public boolean canActivate(Level world, BlockPos pos, Player player) {
@@ -150,16 +150,14 @@ public abstract class InstantBlock extends Block {
 			}
 		}
 
-		this.openScreen(player,pos);
+		if(Helper.isClient(player.getLevel()) && this.has_screen) {
+			this.openScreen(player,pos);
+		}
 
 		return InteractionResult.SUCCESS;
 	}
 
-	public void openScreen(Player player, BlockPos pos) {
-		if(Helper.isClient(player.getLevel())) {
-			ClientHelper.showScreen(this.screen,player,player.getLevel(),pos);
-		}
-	}
+	public void openScreen(Player player, BlockPos pos) {}
 
 	public InteractionResult activate(Level world, BlockPos pos, Player player) {
 		if(build(world, pos.getX(), pos.getY(), pos.getZ(), player)) {

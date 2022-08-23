@@ -1,15 +1,15 @@
 package com.slymask3.instantblocks.core.network.packet;
 
-import com.slymask3.instantblocks.core.network.PacketHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 
 public abstract class InstantPacket extends AbstractPacket {
 	public final boolean activate;
 	public final BlockPos pos;
 
-	public InstantPacket(PacketHelper.PacketID packetID, boolean activate, BlockPos pos) {
-		super(packetID);
+	public InstantPacket(ResourceLocation key, boolean activate, BlockPos pos) {
+		super(key);
 		this.activate = activate;
 		this.pos = pos;
 	}

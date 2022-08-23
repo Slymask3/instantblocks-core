@@ -1,6 +1,6 @@
 package com.slymask3.instantblocks.core.network.packet.client;
 
-import com.slymask3.instantblocks.core.network.PacketHelper;
+import com.slymask3.instantblocks.core.network.CorePacketHelper;
 import com.slymask3.instantblocks.core.network.packet.AbstractPacket;
 import net.minecraft.network.FriendlyByteBuf;
 
@@ -9,7 +9,7 @@ public class MessagePacket extends AbstractPacket {
 	public final String variable;
 
 	public MessagePacket(String message, String variable) {
-		super(PacketHelper.PacketID.MESSAGE);
+		super(CorePacketHelper.PACKET_MESSAGE);
 		this.message = message;
 		this.variable = variable;
 	}

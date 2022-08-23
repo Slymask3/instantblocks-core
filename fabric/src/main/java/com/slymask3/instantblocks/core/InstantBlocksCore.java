@@ -2,13 +2,13 @@ package com.slymask3.instantblocks.core;
 
 import com.slymask3.instantblocks.core.builder.Builder;
 import com.slymask3.instantblocks.core.config.ClothConfig;
-import com.slymask3.instantblocks.core.registry.CoreItems;
 import com.slymask3.instantblocks.core.handler.LootHandler;
 import com.slymask3.instantblocks.core.init.IRegistryHelper;
 import com.slymask3.instantblocks.core.init.Registration;
 import com.slymask3.instantblocks.core.network.IPacketHandler;
 import com.slymask3.instantblocks.core.network.packet.AbstractPacket;
 import com.slymask3.instantblocks.core.platform.Services;
+import com.slymask3.instantblocks.core.registry.CoreItems;
 import com.slymask3.instantblocks.core.util.Helper;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
@@ -29,6 +29,7 @@ import net.minecraft.world.level.Level;
 public class InstantBlocksCore implements ModInitializer {
     @Override
     public void onInitialize() {
+        Core.LOG.info("loading mod: {}", Core.FABRIC_MOD_ID);
         Core.ITEM_GROUP = FabricItemGroupBuilder.build(new ResourceLocation(Core.MOD_BASE, "general"), () -> new ItemStack(CoreItems.WAND_IRON));
         Core.NETWORK = new PacketHandler();
 

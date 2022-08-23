@@ -1,6 +1,6 @@
 package com.slymask3.instantblocks.core.network.packet.client;
 
-import com.slymask3.instantblocks.core.network.PacketHelper;
+import com.slymask3.instantblocks.core.network.CorePacketHelper;
 import com.slymask3.instantblocks.core.network.packet.AbstractPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -10,7 +10,7 @@ public class ParticlePacket extends AbstractPacket {
 	public final int particles;
 
 	public ParticlePacket(BlockPos pos, int particles) {
-		super(PacketHelper.PacketID.PARTICLE);
+		super(CorePacketHelper.PACKET_PARTICLE);
 		this.pos = pos;
 		this.particles = particles;
 	}

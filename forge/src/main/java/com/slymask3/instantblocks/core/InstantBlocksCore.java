@@ -3,13 +3,13 @@ package com.slymask3.instantblocks.core;
 import com.slymask3.instantblocks.core.builder.Builder;
 import com.slymask3.instantblocks.core.config.ClothConfig;
 import com.slymask3.instantblocks.core.config.ForgeConfig;
-import com.slymask3.instantblocks.core.registry.CoreItems;
 import com.slymask3.instantblocks.core.init.IRegistryHelper;
 import com.slymask3.instantblocks.core.init.Registration;
-import com.slymask3.instantblocks.core.network.ForgePacketHandler;
+import com.slymask3.instantblocks.core.network.CoreForgePacketHandler;
 import com.slymask3.instantblocks.core.network.IPacketHandler;
 import com.slymask3.instantblocks.core.network.packet.AbstractPacket;
 import com.slymask3.instantblocks.core.platform.Services;
+import com.slymask3.instantblocks.core.registry.CoreItems;
 import com.slymask3.instantblocks.core.util.Helper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
@@ -56,7 +56,7 @@ public class InstantBlocksCore {
 	}
 
 	private void setupCommon(final FMLCommonSetupEvent event) {
-		ForgePacketHandler.register();
+		CoreForgePacketHandler.register();
 		Core.init();
 	}
 
@@ -92,15 +92,15 @@ public class InstantBlocksCore {
 
 	public static class PacketHandler implements IPacketHandler {
 		public void sendToServer(AbstractPacket message) {
-			ForgePacketHandler.INSTANCE.sendToServer(message);
+			CoreForgePacketHandler.INSTANCE.sendToServer(message);
 		}
 		public void sendToClient(Player player, AbstractPacket message) {
 			if(Helper.isServer(player.getLevel())) {
-				ForgePacketHandler.INSTANCE.sendTo(message, ((ServerPlayer)player).connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
+				CoreForgePacketHandler.INSTANCE.sendTo(message, ((ServerPlayer)player).connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
 			}
 		}
 		public void sendToAllAround(Level world, BlockPos pos, AbstractPacket message) {
-			ForgePacketHandler.INSTANCE.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunkAt(pos)), message);
+			CoreForgePacketHandler.INSTANCE.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunkAt(pos)), message);
 		}
 	}
 }

@@ -1,5 +1,5 @@
 {
-  "parent": "item/handheld",
+  "parent": "instantblocks-core:item/wand",
   "textures": {
     "layer0": "instantblocks-core:items/wand_wood"
   }
