@@ -3,6 +3,8 @@ package com.slymask3.instantblocks.core;
 import com.slymask3.instantblocks.core.builder.Builder;
 import com.slymask3.instantblocks.core.config.ClothConfig;
 import com.slymask3.instantblocks.core.config.ForgeConfig;
+import com.slymask3.instantblocks.core.init.ForgeMenus;
+import com.slymask3.instantblocks.core.init.ForgeTiles;
 import com.slymask3.instantblocks.core.init.IRegistryHelper;
 import com.slymask3.instantblocks.core.init.Registration;
 import com.slymask3.instantblocks.core.network.CoreForgePacketHandler;
@@ -37,6 +39,8 @@ public class InstantBlocksCore {
 	public InstantBlocksCore() {
 		Core.ITEM_GROUP = new CreativeModeTab(CreativeModeTab.TABS.length, Core.MOD_BASE) { public @NotNull ItemStack makeIcon() { return new ItemStack(CoreItems.WAND_IRON); } };
 		Core.NETWORK = new PacketHandler();
+		Core.TILES = new ForgeTiles();
+		Core.MENUS = new ForgeMenus();
 
 		if(Services.PLATFORM.isModLoaded("cloth_config")) {
 			ClothConfig.register();
@@ -62,8 +66,18 @@ public class InstantBlocksCore {
 
 	private void setupRegistry(final RegisterEvent event) {
 		if(event.getForgeRegistry() != null) {
-			if(event.getForgeRegistry().getRegistryKey().equals(Registry.ITEM_REGISTRY)) {
+			if(event.getForgeRegistry().getRegistryKey().equals(Registry.BLOCK_REGISTRY)) {
+				Core.LOG.error("Registry.BLOCK_REGISTRY");
+				Registration.registerBlocks(new ForgeRegistryHelper<>(event.getForgeRegistry()));
+			} else if(event.getForgeRegistry().getRegistryKey().equals(Registry.ITEM_REGISTRY)) {
+				Core.LOG.error("Registry.ITEM_REGISTRY");
 				Registration.registerItems(new ForgeRegistryHelper<>(event.getForgeRegistry()));
+			} else if(event.getForgeRegistry().getRegistryKey().equals(Registry.BLOCK_ENTITY_TYPE_REGISTRY)) {
+				Core.LOG.error("Registry.BLOCK_ENTITY_TYPE_REGISTRY");
+				Registration.registerTiles(new ForgeRegistryHelper<>(event.getForgeRegistry()));
+			} else if(event.getForgeRegistry().getRegistryKey().equals(Registry.MENU_REGISTRY)) {
+				Core.LOG.error("Registry.MENU_REGISTRY");
+				Registration.registerMenus(new ForgeRegistryHelper<>(event.getForgeRegistry()));
 			}
 		}
 	}

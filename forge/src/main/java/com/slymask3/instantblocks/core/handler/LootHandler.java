@@ -18,10 +18,10 @@ public class LootHandler {
     public static void register(LootTableLoadEvent event) {
         String name = event.getName().toString();
         if(Core.CONFIG.GENERATE_IN_CHESTS_BONUS() && name.equals("minecraft:chests/spawn_bonus_chest")) {
-            event.getTable().addPool(injectPool(STARTER));
+            //event.getTable().addPool(injectPool(STARTER));
         }
         if(Core.CONFIG.GENERATE_IN_CHESTS() && name.contains("minecraft:chests/") && !name.equals("minecraft:chests/spawn_bonus_chest")) {
-            event.getTable().addPool(injectPool(BLOCKS));
+            //event.getTable().addPool(injectPool(BLOCKS));
         }
     }
 
