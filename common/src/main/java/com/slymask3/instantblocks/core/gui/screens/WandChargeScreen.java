@@ -13,27 +13,29 @@ import net.minecraft.world.entity.player.Inventory;
 public class WandChargeScreen extends AbstractContainerScreen<WandChargeMenu> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(Core.FABRIC_MOD_ID,"textures/gui/container/wand.png");
 
-    public WandChargeScreen(WandChargeMenu menu, Inventory $$1, Component $$2) {
-        super(menu,$$1,$$2);
+    public WandChargeScreen(WandChargeMenu menu, Inventory inventory, Component title) {
+        super(menu,inventory,title);
+        this.imageHeight = 133;
     }
 
     public void init() {
         super.init();
         this.titleLabelX = (this.imageWidth - this.font.width(this.title)) / 2;
+        this.inventoryLabelY = this.imageHeight - 94;
     }
 
-    public void render(PoseStack $$0, int $$1, int $$2, float $$3) {
-        this.renderBackground($$0);
-        super.render($$0, $$1, $$2, $$3);
-        this.renderTooltip($$0, $$1, $$2);
+    public void render(PoseStack poseStack, int $$1, int $$2, float $$3) {
+        this.renderBackground(poseStack);
+        super.render(poseStack, $$1, $$2, $$3);
+        this.renderTooltip(poseStack, $$1, $$2);
     }
 
-    protected void renderBg(PoseStack $$0, float $$1, int $$2, int $$3) {
+    protected void renderBg(PoseStack poseStack, float $$1, int $$2, int $$3) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        int $$4 = this.leftPos;
-        int $$5 = this.topPos;
-        this.blit($$0, $$4, $$5, 0, 0, this.imageWidth, this.imageHeight);
+        int left = (this.width - this.imageWidth) / 2;
+        int top = (this.height - this.imageHeight) / 2;
+        this.blit(poseStack, left, top, 0, 0, this.imageWidth, this.imageHeight);
     }
 }

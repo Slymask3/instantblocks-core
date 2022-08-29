@@ -78,8 +78,14 @@ public class Helper {
 		}
 	}
 
-	public static boolean isWand(ItemStack is) {
-		return is.getItem() instanceof InstantWandItem;
+	public static boolean isWand(ItemStack itemStack) {
+		if(itemStack == null) return false;
+		return itemStack.getItem() instanceof InstantWandItem;
+	}
+
+	public static boolean isWandFuel(ItemStack itemStack) {
+		if(itemStack == null) return false;
+		return Core.FUEL.containsKey(itemStack.getItem());
 	}
 
 	public static int wandDamage(Block block) {

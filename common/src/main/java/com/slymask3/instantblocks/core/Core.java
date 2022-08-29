@@ -6,8 +6,13 @@ import com.slymask3.instantblocks.core.init.ITileHelper;
 import com.slymask3.instantblocks.core.network.IPacketHandler;
 import com.slymask3.instantblocks.core.util.Helper;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Core {
     public static final String MOD_BASE = "instantblocks";
@@ -21,8 +26,11 @@ public class Core {
     public static ITileHelper TILES;
     public static IMenuHelper MENUS;
     public static IConfig CONFIG = new IConfig(){};
+    public static Map<Item,Integer> FUEL;
 
     public static void init() {
         Helper.createDirectory(CONFIG_DIR);
+        FUEL = new HashMap<>();
+        FUEL.put(Items.BONE,5);
     }
 }

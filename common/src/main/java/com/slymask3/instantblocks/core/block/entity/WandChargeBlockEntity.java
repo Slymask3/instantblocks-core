@@ -7,7 +7,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -31,44 +30,31 @@ public class WandChargeBlockEntity extends BaseContainerBlockEntity implements W
 		this.items = NonNullList.withSize(2, ItemStack.EMPTY);
 	}
 
-	@Override
-	public ClientboundBlockEntityDataPacket getUpdatePacket() {
-		return ClientboundBlockEntityDataPacket.create(this);
+	public void load(CompoundTag tag) {
+		super.load(tag);
+		this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
+		ContainerHelper.loadAllItems(tag, this.items);
+//		this.litTime = tag.getShort("BurnTime");
+//		this.cookingProgress = tag.getShort("CookTime");
+//		this.cookingTotalTime = tag.getShort("CookTimeTotal");
+//		this.litDuration = this.getBurnDuration((ItemStack)this.items.get(1));
 	}
 
-	@Override
-	public CompoundTag getUpdateTag() {
-		return this.saveWithoutMetadata();
+	protected void saveAdditional(CompoundTag tag) {
+		super.saveAdditional(tag);
+//		tag.putShort("BurnTime", (short)this.litTime);
+//		tag.putShort("CookTime", (short)this.cookingProgress);
+//		tag.putShort("CookTimeTotal", (short)this.cookingTotalTime);
+		ContainerHelper.saveAllItems(tag, this.items);
 	}
-
-	@Override
-	public void load(CompoundTag nbt) {
-		super.load(nbt);
-	}
-
-	@Override
-	protected void saveAdditional(CompoundTag nbt) {
-		super.saveAdditional(nbt);
-	}
-
-	protected void markUpdated() {
-		this.setChanged();
-		this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
-	}
-
-
-
-
-
 
 	protected Component getDefaultName() {
 		return Component.translatable("container.furnace");
 	}
 
 	protected AbstractContainerMenu createMenu(int $$0, Inventory $$1) {
-		return new WandChargeMenu($$0);
+		return new WandChargeMenu($$0, $$1, this);
 	}
-
 
 	@Override
 	public int[] getSlotsForFace(Direction direction) {
@@ -122,18 +108,6 @@ public class WandChargeBlockEntity extends BaseContainerBlockEntity implements W
 		} else {
 			return $$0.distanceToSqr((double)this.worldPosition.getX() + 0.5, (double)this.worldPosition.getY() + 0.5, (double)this.worldPosition.getZ() + 0.5) <= 64.0;
 		}
-	}
-
-	public boolean canPlaceItem(int $$0, ItemStack $$1) {
-//		if ($$0 == 2) {
-//			return false;
-//		} else if ($$0 != 1) {
-//			return true;
-//		} else {
-//			ItemStack $$2 = (ItemStack)this.items.get(1);
-//			return isFuel($$1) || $$1.is(Items.BUCKET) && !$$2.is(Items.BUCKET);
-//		}
-		return true;
 	}
 
 	public void clearContent() {

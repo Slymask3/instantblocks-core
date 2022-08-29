@@ -3,6 +3,7 @@ package com.slymask3.instantblocks.core;
 import com.slymask3.instantblocks.core.builder.Builder;
 import com.slymask3.instantblocks.core.config.ClothConfig;
 import com.slymask3.instantblocks.core.handler.LootHandler;
+import com.slymask3.instantblocks.core.init.FabricMenus;
 import com.slymask3.instantblocks.core.init.FabricTiles;
 import com.slymask3.instantblocks.core.init.IRegistryHelper;
 import com.slymask3.instantblocks.core.init.Registration;
@@ -31,9 +32,12 @@ public class InstantBlocksCore implements ModInitializer {
     @Override
     public void onInitialize() {
         Core.LOG.info("loading mod: {}", Core.FABRIC_MOD_ID);
+
+        Core.init();
         Core.ITEM_GROUP = FabricItemGroupBuilder.build(new ResourceLocation(Core.MOD_BASE, "general"), () -> new ItemStack(CoreItems.WAND_IRON));
         Core.NETWORK = new PacketHandler();
         Core.TILES = new FabricTiles();
+        Core.MENUS = new FabricMenus();
 
         if(Services.PLATFORM.isModLoaded("cloth-config")) {
             ClothConfig.register();
@@ -49,7 +53,6 @@ public class InstantBlocksCore implements ModInitializer {
         PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, entity) -> !Builder.inProgress(world,pos));
 
         LootHandler.register();
-        Core.init();
     }
 
     public static class FabricRegistryHelper<T> implements IRegistryHelper<T> {

@@ -8,11 +8,13 @@
   "item.instantblocks-core.wand_gold": "Golden Instant Wand",
   "item.instantblocks-core.wand_diamond": "Diamond Instant Wand",
   "item.instantblocks-core.wand_netherite": "Netherite Instant Wand",
+  "block.instantblocks-core.wand_charge": "Wand Charge Station",
 
   "ib.message.error.wand": "§cYou must use an Instant Wand",
   "ib.message.error.wand_durability": "§cYou don't have enough durability for this block",
   "ib.message.error.disabled": "§cThis instant block is disabled in the config",
 
+  "ib.gui.charge.title": "Wand Charge Station",
   "ib.gui.generate": "Generate",
 
   "text.autoconfig.instantblocks/core.title": "Instant Blocks Settings",

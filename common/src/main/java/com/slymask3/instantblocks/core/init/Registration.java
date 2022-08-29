@@ -5,7 +5,6 @@ import com.slymask3.instantblocks.core.registry.CoreBlocks;
 import com.slymask3.instantblocks.core.registry.CoreItems;
 import com.slymask3.instantblocks.core.registry.CoreMenus;
 import com.slymask3.instantblocks.core.registry.CoreTiles;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
@@ -48,7 +47,6 @@ public class Registration {
     public static void registerMenus(IRegistryHelper<MenuType<?>> helper) {
         Core.MENUS.init();
         helper.register(resource(Names.WAND_CHARGE), CoreMenus.WAND_CHARGE);
-        Core.MENUS.link();
     }
 
     private static ResourceLocation resource(String name) {

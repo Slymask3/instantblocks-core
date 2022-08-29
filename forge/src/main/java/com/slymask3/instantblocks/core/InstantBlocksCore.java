@@ -37,6 +37,7 @@ import org.jetbrains.annotations.NotNull;
 @Mod(Core.FORGE_MOD_ID)
 public class InstantBlocksCore {
 	public InstantBlocksCore() {
+		Core.init();
 		Core.ITEM_GROUP = new CreativeModeTab(CreativeModeTab.TABS.length, Core.MOD_BASE) { public @NotNull ItemStack makeIcon() { return new ItemStack(CoreItems.WAND_IRON); } };
 		Core.NETWORK = new PacketHandler();
 		Core.TILES = new ForgeTiles();
@@ -61,22 +62,17 @@ public class InstantBlocksCore {
 
 	private void setupCommon(final FMLCommonSetupEvent event) {
 		CoreForgePacketHandler.register();
-		Core.init();
 	}
 
 	private void setupRegistry(final RegisterEvent event) {
 		if(event.getForgeRegistry() != null) {
 			if(event.getForgeRegistry().getRegistryKey().equals(Registry.BLOCK_REGISTRY)) {
-				Core.LOG.error("Registry.BLOCK_REGISTRY");
 				Registration.registerBlocks(new ForgeRegistryHelper<>(event.getForgeRegistry()));
 			} else if(event.getForgeRegistry().getRegistryKey().equals(Registry.ITEM_REGISTRY)) {
-				Core.LOG.error("Registry.ITEM_REGISTRY");
 				Registration.registerItems(new ForgeRegistryHelper<>(event.getForgeRegistry()));
 			} else if(event.getForgeRegistry().getRegistryKey().equals(Registry.BLOCK_ENTITY_TYPE_REGISTRY)) {
-				Core.LOG.error("Registry.BLOCK_ENTITY_TYPE_REGISTRY");
 				Registration.registerTiles(new ForgeRegistryHelper<>(event.getForgeRegistry()));
 			} else if(event.getForgeRegistry().getRegistryKey().equals(Registry.MENU_REGISTRY)) {
-				Core.LOG.error("Registry.MENU_REGISTRY");
 				Registration.registerMenus(new ForgeRegistryHelper<>(event.getForgeRegistry()));
 			}
 		}

@@ -5,6 +5,7 @@ import com.slymask3.instantblocks.core.inventory.WandChargeMenu;
 import com.slymask3.instantblocks.core.util.Helper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
@@ -36,7 +37,7 @@ public class WandChargeBlock extends BaseEntityBlock {
         if(Helper.isClient(world)) {
             return InteractionResult.SUCCESS;
         } else {
-            player.openMenu(new SimpleMenuProvider((id, playerInv, player1) -> new WandChargeMenu(id), Component.literal("test")));
+            player.openMenu(new SimpleMenuProvider((id, playerInv, player1) -> new WandChargeMenu(id, playerInv, (Container)world.getBlockEntity(pos)), Component.translatable("ib.gui.charge.title")));
             return InteractionResult.CONSUME;
         }
     }

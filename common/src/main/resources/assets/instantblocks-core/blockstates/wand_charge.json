@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "instantblocks-core:block/wand_charge"
+    }
+  }
+}
