@@ -2,7 +2,6 @@ package com.slymask3.instantblocks.core.registry;
 
 import com.slymask3.instantblocks.core.item.InstantWandItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Tiers;
 
 public class CoreItems {
     public static Item WAND_WOOD;
@@ -13,11 +12,11 @@ public class CoreItems {
     public static Item WAND_NETHERITE;
 
     public static void init() {
-        WAND_WOOD = new InstantWandItem(Tiers.WOOD);
-        WAND_STONE = new InstantWandItem(Tiers.STONE);
-        WAND_IRON = new InstantWandItem(Tiers.IRON);
-        WAND_GOLD = new InstantWandItem(Tiers.GOLD);
-        WAND_DIAMOND = new InstantWandItem(Tiers.DIAMOND);
-        WAND_NETHERITE = new InstantWandItem(Tiers.NETHERITE);
+        WAND_WOOD = new InstantWandItem(100);
+        WAND_STONE = new InstantWandItem(200);
+        WAND_IRON = new InstantWandItem(300);
+        WAND_GOLD = new InstantWandItem(500);
+        WAND_DIAMOND = new InstantWandItem(1000);
+        WAND_NETHERITE = new InstantWandItem(2000);
     }
 }

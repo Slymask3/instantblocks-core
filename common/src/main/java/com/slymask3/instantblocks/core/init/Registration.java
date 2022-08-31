@@ -30,13 +30,13 @@ public class Registration {
 
     public static void registerItems(IRegistryHelper<Item> helper) {
         CoreItems.init();
+        helper.register(resource(Names.WAND_CHARGE), blockItem(CoreBlocks.WAND_CHARGE));
         helper.register(resource(Names.WAND_WOOD), CoreItems.WAND_WOOD);
         helper.register(resource(Names.WAND_STONE), CoreItems.WAND_STONE);
         helper.register(resource(Names.WAND_IRON), CoreItems.WAND_IRON);
         helper.register(resource(Names.WAND_GOLD), CoreItems.WAND_GOLD);
         helper.register(resource(Names.WAND_DIAMOND), CoreItems.WAND_DIAMOND);
         helper.register(resource(Names.WAND_NETHERITE), CoreItems.WAND_NETHERITE);
-        helper.register(resource(Names.WAND_CHARGE), blockItem(CoreBlocks.WAND_CHARGE));
     }
 
     public static void registerTiles(IRegistryHelper<BlockEntityType<?>> helper) {

@@ -10,7 +10,7 @@ import com.slymask3.instantblocks.core.init.Registration;
 import com.slymask3.instantblocks.core.network.IPacketHandler;
 import com.slymask3.instantblocks.core.network.packet.AbstractPacket;
 import com.slymask3.instantblocks.core.platform.Services;
-import com.slymask3.instantblocks.core.registry.CoreItems;
+import com.slymask3.instantblocks.core.registry.CoreBlocks;
 import com.slymask3.instantblocks.core.util.Helper;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
@@ -19,12 +19,18 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
@@ -34,7 +40,7 @@ public class InstantBlocksCore implements ModInitializer {
         Core.LOG.info("loading mod: {}", Core.FABRIC_MOD_ID);
 
         Core.init();
-        Core.ITEM_GROUP = FabricItemGroupBuilder.build(new ResourceLocation(Core.MOD_BASE, "general"), () -> new ItemStack(CoreItems.WAND_IRON));
+        Core.ITEM_GROUP = FabricItemGroupBuilder.build(new ResourceLocation(Core.MOD_BASE, "general"), () -> new ItemStack(CoreBlocks.WAND_CHARGE));
         Core.NETWORK = new PacketHandler();
         Core.TILES = new FabricTiles();
         Core.MENUS = new FabricMenus();
@@ -78,6 +84,19 @@ public class InstantBlocksCore implements ModInitializer {
             for(ServerPlayer player : PlayerLookup.tracking((ServerLevel)world, pos)) {
                 ServerPlayNetworking.send(player, message.getKey(), message.getBuffer());
             }
+        }
+        public void openScreen(Player player, MenuProvider menu, BlockPos pos) {
+            player.openMenu(new ExtendedScreenHandlerFactory() {
+                public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
+                    return menu.createMenu(i,inventory,player);
+                }
+                public Component getDisplayName() {
+                    return menu.getDisplayName();
+                }
+                public void writeScreenOpeningData(ServerPlayer player, FriendlyByteBuf buf) {
+                    buf.writeBlockPos(pos);
+                }
+            });
         }
     }
 }

@@ -1,53 +1,64 @@
 package com.slymask3.instantblocks.core.inventory;
 
+import com.slymask3.instantblocks.core.block.entity.WandChargeBlockEntity;
 import com.slymask3.instantblocks.core.registry.CoreMenus;
 import com.slymask3.instantblocks.core.util.Helper;
-import net.minecraft.world.Container;
-import net.minecraft.world.SimpleContainer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class WandChargeMenu extends AbstractContainerMenu {
-    private final Container container;
-    private final ContainerData data;
+    //private final ContainerData data;
     protected final Level level;
+    private final WandChargeBlockEntity blockEntity;
 
-    public WandChargeMenu(int windowId, Inventory inventory) {
-        this(windowId, inventory, new SimpleContainer(2), new SimpleContainerData(2));
-    }
-
-    public WandChargeMenu(int windowId, Inventory inventory, Container container) {
-        this(windowId, inventory, container, new SimpleContainerData(2));
-    }
-
-    public WandChargeMenu(int windowId, Inventory inventory, Container container, ContainerData containerData) {
+    public WandChargeMenu(int windowId, Inventory inventory, Level world, BlockPos pos) {
         super(CoreMenus.WAND_CHARGE, windowId);
-        checkContainerSize(container, 2);
-        checkContainerDataCount(containerData, 2);
-        this.container = container;
-        this.data = containerData;
+        //checkContainerSize(container, 2);
+        //checkContainerDataCount(containerData, 2);
+        //this.data = containerData;
+        this.blockEntity = (WandChargeBlockEntity)world.getBlockEntity(pos);
         this.level = inventory.player.level;
 
-        this.addSlot(new WandFuelSlot(container, 0, 53, 20));
-        this.addSlot(new WandSlot(container, 1, 107, 20));
+        this.addSlot(new Slot(blockEntity, 0, 53, 20) {
+            public boolean mayPlace(ItemStack itemStack) {
+                return Helper.isWandFuel(itemStack);
+            }
+        });
 
-        for(int i = 0; i < 3; ++i) {
-            for(int j = 0; j < 9; ++j) {
-                this.addSlot(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, i * 18 + 51));
+        this.addSlot(new Slot(blockEntity, 1, 107, 20) {
+            public boolean mayPlace(ItemStack itemStack) {
+                return Helper.isWand(itemStack);
+            }
+            public int getMaxStackSize(ItemStack itemStack) {
+                return 1;
+            }
+        });
+
+        for(int y = 0; y < 3; ++y) {
+            for(int x = 0; x < 9; ++x) {
+                this.addSlot(new Slot(inventory, x + y * 9 + 9, 8 + x * 18, y * 18 + 51));
             }
         }
 
-        for(int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(inventory, i, 8 + i * 18, 109));
+        for(int x = 0; x < 9; ++x) {
+            this.addSlot(new Slot(inventory, x, 8 + x * 18, 109));
         }
 
-        this.addDataSlots(containerData);
+        addDataSlot(new DataSlot() {
+            public int get() {
+                return blockEntity.chargeProgress & 0xffff;
+            }
+            public void set(int value) {
+                int add = blockEntity.chargeProgress & 0xffff0000;
+                blockEntity.chargeProgress = add + (value & 0xffff);
+            }
+        });
     }
 
     public ItemStack quickMoveStack(Player player, int index) {
@@ -83,6 +94,12 @@ public class WandChargeMenu extends AbstractContainerMenu {
     }
 
     public boolean stillValid(Player player) {
-        return this.container.stillValid(player);
+        return this.blockEntity.stillValid(player);
+    }
+
+    public int getProgress() {
+        int cur = this.blockEntity.chargeProgress;
+        int max = 100;
+        return cur != 0 ? cur * 24 / max : 0;
     }
 }

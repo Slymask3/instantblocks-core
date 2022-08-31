@@ -11,12 +11,13 @@ import com.slymask3.instantblocks.core.network.CoreForgePacketHandler;
 import com.slymask3.instantblocks.core.network.IPacketHandler;
 import com.slymask3.instantblocks.core.network.packet.AbstractPacket;
 import com.slymask3.instantblocks.core.platform.Services;
-import com.slymask3.instantblocks.core.registry.CoreItems;
+import com.slymask3.instantblocks.core.registry.CoreBlocks;
 import com.slymask3.instantblocks.core.util.Helper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -29,6 +30,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkDirection;
+import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegisterEvent;
@@ -38,7 +40,7 @@ import org.jetbrains.annotations.NotNull;
 public class InstantBlocksCore {
 	public InstantBlocksCore() {
 		Core.init();
-		Core.ITEM_GROUP = new CreativeModeTab(CreativeModeTab.TABS.length, Core.MOD_BASE) { public @NotNull ItemStack makeIcon() { return new ItemStack(CoreItems.WAND_IRON); } };
+		Core.ITEM_GROUP = new CreativeModeTab(CreativeModeTab.TABS.length, Core.MOD_BASE) { public @NotNull ItemStack makeIcon() { return new ItemStack(CoreBlocks.WAND_CHARGE); } };
 		Core.NETWORK = new PacketHandler();
 		Core.TILES = new ForgeTiles();
 		Core.MENUS = new ForgeMenus();
@@ -111,6 +113,9 @@ public class InstantBlocksCore {
 		}
 		public void sendToAllAround(Level world, BlockPos pos, AbstractPacket message) {
 			CoreForgePacketHandler.INSTANCE.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunkAt(pos)), message);
+		}
+		public void openScreen(Player player, MenuProvider menu, BlockPos pos) {
+			NetworkHooks.openScreen((ServerPlayer)player,menu,pos);
 		}
 	}
 }

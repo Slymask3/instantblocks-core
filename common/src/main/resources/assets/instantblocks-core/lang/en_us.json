@@ -14,6 +14,8 @@
   "ib.message.error.wand_durability": "§cYou don't have enough durability for this block",
   "ib.message.error.disabled": "§cThis instant block is disabled in the config",
 
+  "ib.tooltip.wand": "Charge: %s/%s",
+
   "ib.gui.charge.title": "Wand Charge Station",
   "ib.gui.generate": "Generate",
 
