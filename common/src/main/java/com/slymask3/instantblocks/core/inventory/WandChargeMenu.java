@@ -13,15 +13,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class WandChargeMenu extends AbstractContainerMenu {
-    //private final ContainerData data;
     protected final Level level;
     private final WandChargeBlockEntity blockEntity;
 
     public WandChargeMenu(int windowId, Inventory inventory, Level world, BlockPos pos) {
         super(CoreMenus.WAND_CHARGE, windowId);
-        //checkContainerSize(container, 2);
-        //checkContainerDataCount(containerData, 2);
-        //this.data = containerData;
         this.blockEntity = (WandChargeBlockEntity)world.getBlockEntity(pos);
         this.level = inventory.player.level;
 
@@ -51,13 +47,18 @@ public class WandChargeMenu extends AbstractContainerMenu {
         }
 
         addDataSlot(new DataSlot() {
-            public int get() {
-                return blockEntity.chargeProgress & 0xffff;
-            }
-            public void set(int value) {
-                int add = blockEntity.chargeProgress & 0xffff0000;
-                blockEntity.chargeProgress = add + (value & 0xffff);
-            }
+            public int get() { return blockEntity.chargeProgress; }
+            public void set(int value) { blockEntity.chargeProgress = value; }
+        });
+
+        addDataSlot(new DataSlot() {
+            public int get() { return blockEntity.chargeTotalTime; }
+            public void set(int value) { blockEntity.chargeTotalTime = value; }
+        });
+
+        addDataSlot(new DataSlot() {
+            public int get() { return blockEntity.chargeAmount; }
+            public void set(int value) { blockEntity.chargeAmount = value; }
         });
     }
 
@@ -99,7 +100,7 @@ public class WandChargeMenu extends AbstractContainerMenu {
 
     public int getProgress() {
         int cur = this.blockEntity.chargeProgress;
-        int max = 100;
+        int max = this.blockEntity.chargeTotalTime;
         return cur != 0 ? cur * 24 / max : 0;
     }
 }

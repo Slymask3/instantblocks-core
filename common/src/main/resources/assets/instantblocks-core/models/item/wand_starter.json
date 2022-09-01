@@ -1,6 +1,6 @@
 {
   "parent": "instantblocks-core:item/wand",
   "textures": {
-    "layer0": "instantblocks-core:items/wand_diamond"
+    "layer0": "instantblocks-core:items/wand_starter"
   }
 } 

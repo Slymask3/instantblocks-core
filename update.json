@@ -1,0 +1,11 @@
+{
+  "homepage": "https://github.com/Slymask3/instantblocks-core",
+  "promos": {
+    "1.19.2-latest": "0.1.0",
+    "1.19.2-recommended": "0.1.0",
+    "1.19.1-latest": "0.1.0",
+    "1.19.1-recommended": "0.1.0",
+    "1.19-latest": "0.1.0",
+    "1.19-recommended": "0.1.0"
+  }
+}

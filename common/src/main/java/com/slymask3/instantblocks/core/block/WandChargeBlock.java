@@ -37,8 +37,8 @@ public class WandChargeBlock extends BaseEntityBlock {
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
         if(Helper.isServer(world)) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if(blockEntity instanceof MenuProvider) {
-                Core.NETWORK.openScreen(player,(MenuProvider)blockEntity,pos);
+            if(blockEntity instanceof MenuProvider menuProvider) {
+                Core.NETWORK.openScreen(player,menuProvider,pos);
                 return InteractionResult.CONSUME;
             }
         }
@@ -50,6 +50,6 @@ public class WandChargeBlock extends BaseEntityBlock {
     }
 
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-        return world.isClientSide ? null : createTickerHelper(type, CoreTiles.WAND_CHARGE, WandChargeBlockEntity::serverTick);
+        return Helper.isClient(world) ? null : createTickerHelper(type, CoreTiles.WAND_CHARGE, WandChargeBlockEntity::serverTick);
     }
 }

@@ -7,7 +7,7 @@
   ],
   "key": {
     "M": {
-      "tag": "forge:ingots/gold"
+      "tag": "minecraft:planks"
     },
     "R": {
       "item": "minecraft:redstone_block"
@@ -17,6 +17,6 @@
     }
   },
   "result": {
-    "item": "instantblocks-core:wand_gold"
+    "item": "instantblocks-core:wand_starter"
   }
 }

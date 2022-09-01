@@ -21,6 +21,6 @@ public class ClientHandler {
         if(Services.PLATFORM.isModLoaded("cloth_config")) {
             ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () -> new ConfigScreenHandler.ConfigScreenFactory((client, parent) -> AutoConfig.getConfigScreen(ClothConfig.class, parent).get()));
         }
-        event.enqueueWork(() -> MenuScreens.register(CoreMenus.WAND_CHARGE, WandChargeScreen::new));
+        MenuScreens.register(CoreMenus.WAND_CHARGE, WandChargeScreen::new);
     }
 }

@@ -1,7 +1,10 @@
 package com.slymask3.instantblocks.core.block.entity;
 
+import com.slymask3.instantblocks.core.Core;
 import com.slymask3.instantblocks.core.inventory.WandChargeMenu;
+import com.slymask3.instantblocks.core.item.InstantWandItem;
 import com.slymask3.instantblocks.core.registry.CoreTiles;
+import com.slymask3.instantblocks.core.util.Helper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -21,7 +24,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-import javax.annotation.Nullable;
 import java.util.Iterator;
 
 public class WandChargeBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer, StackedContentsCompatible {
@@ -33,8 +35,9 @@ public class WandChargeBlockEntity extends BaseContainerBlockEntity implements W
 	public WandChargeBlockEntity(BlockPos pos, BlockState state) {
 		super(CoreTiles.WAND_CHARGE, pos, state);
 		this.items = NonNullList.withSize(2, ItemStack.EMPTY);
-		this.chargeProgress = 1;
-		this.chargeTotalTime = 100;
+		this.chargeProgress = 0;
+		this.chargeTotalTime = 0;
+		this.chargeAmount = 0;
 	}
 
 	@Override
@@ -53,12 +56,14 @@ public class WandChargeBlockEntity extends BaseContainerBlockEntity implements W
 		ContainerHelper.loadAllItems(tag, this.items);
 		this.chargeProgress = tag.getShort("ChargeProgress");
 		this.chargeAmount = tag.getShort("ChargeAmount");
+		this.chargeTotalTime = tag.getShort("ChargeTotalTime");
 	}
 
 	protected void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
 		tag.putShort("ChargeProgress", (short)this.chargeProgress);
 		tag.putShort("ChargeAmount", (short)this.chargeAmount);
+		tag.putShort("ChargeTotalTime", (short)this.chargeTotalTime);
 		ContainerHelper.saveAllItems(tag, this.items);
 	}
 
@@ -71,16 +76,15 @@ public class WandChargeBlockEntity extends BaseContainerBlockEntity implements W
 		return Component.translatable("ib.gui.charge.title");
 	}
 
-	protected AbstractContainerMenu createMenu(int $$0, Inventory $$1) {
-		return new WandChargeMenu($$0, $$1, getLevel(), getBlockPos());
+	protected AbstractContainerMenu createMenu(int windowId, Inventory inventory) {
+		return new WandChargeMenu(windowId, inventory, getLevel(), getBlockPos());
 	}
 
-	@Override
 	public int[] getSlotsForFace(Direction direction) {
-		return new int[0];
+		return direction == Direction.DOWN ? new int[]{1} : new int[]{0,1};
 	}
 
-	public boolean canPlaceItemThroughFace(int $$0, ItemStack $$1, @Nullable Direction $$2) {
+	public boolean canPlaceItemThroughFace(int $$0, ItemStack $$1, Direction $$2) {
 		return this.canPlaceItem($$0, $$1);
 	}
 
@@ -134,16 +138,11 @@ public class WandChargeBlockEntity extends BaseContainerBlockEntity implements W
 	}
 
 	public void setItem(int index, ItemStack itemStack) {
-		ItemStack original = this.items.get(index);
-		boolean $$3 = !itemStack.isEmpty() && itemStack.sameItem(original) && ItemStack.tagMatches(itemStack, original);
 		this.items.set(index, itemStack);
-		if(itemStack.getCount() > this.getMaxStackSize()) {
-			itemStack.setCount(this.getMaxStackSize());
-		}
-		if(index == 0 && !$$3) {
-			this.chargeProgress = 1;
-			this.setChanged();
-		}
+	}
+
+	public boolean canPlaceItem(int index, ItemStack itemStack) {
+		return index == 0 && Helper.isWandFuel(itemStack) || index == 1 && Helper.isWand(itemStack);
 	}
 
 	public static void serverTick(Level world, BlockPos pos, BlockState state, WandChargeBlockEntity entity) {
@@ -152,17 +151,29 @@ public class WandChargeBlockEntity extends BaseContainerBlockEntity implements W
 		ItemStack fuel = entity.items.get(0);
 		ItemStack wand = entity.items.get(1);
 
-//		Core.LOG.info("fuel: {}", fuel);
-//		Core.LOG.info("wand: {}", wand);
-//		Core.LOG.info("chargeProgress: {}", entity.chargeProgress);
+		if(!wand.equals(ItemStack.EMPTY) && wand.getItem() instanceof InstantWandItem wandItem && Helper.getWandCharge(wand) < wandItem.getMaxCharge()) {
+			entity.chargeTotalTime = wandItem.getChargeSpeed();
 
-		if(!wand.equals(ItemStack.EMPTY) && entity.chargeProgress >= 0) {
-			++entity.chargeProgress;
-			if(entity.chargeProgress == entity.chargeTotalTime) {
+			//take fuel
+			if(!fuel.equals(ItemStack.EMPTY) && entity.chargeProgress == 0) {
+				entity.chargeAmount = Core.FUEL.get(fuel.getItem());
 				entity.chargeProgress = 1;
-				isChanged = true;
+				if(fuel.getCount() == 1) {
+					entity.items.set(0,ItemStack.EMPTY);
+				} else {
+					fuel.shrink(1);
+				}
 			}
-//			isChanged = true;
+
+			//tick
+			if(entity.chargeProgress > 0) {
+				++entity.chargeProgress;
+				if(entity.chargeProgress >= entity.chargeTotalTime) {
+					entity.chargeProgress = 0;
+					Helper.addWandCharge(wand,entity.chargeAmount);
+					isChanged = true;
+				}
+			}
 		}
 
 		if(isChanged) {

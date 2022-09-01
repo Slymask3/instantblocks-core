@@ -6,7 +6,7 @@ import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 
-public class FabricMenus implements IMenuHelper {
+public class FabricMenus implements IBasicHelper {
     public void init() {
         CoreMenus.WAND_CHARGE = new ExtendedScreenHandlerType<>((windowId, inv, data) -> {
             Level world = inv.player.getCommandSenderWorld();

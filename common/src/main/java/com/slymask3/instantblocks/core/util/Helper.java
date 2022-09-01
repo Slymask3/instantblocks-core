@@ -88,6 +88,22 @@ public class Helper {
 		return Core.FUEL.containsKey(itemStack.getItem());
 	}
 
+	public static int getWandCharge(ItemStack wand) {
+		if(wand.getItem() instanceof InstantWandItem) {
+			CompoundTag tag = wand.getOrCreateTag();
+			return tag.getInt("Charge");
+		}
+		return 0;
+	}
+
+	public static void addWandCharge(ItemStack wand, int value) {
+		if(wand.getItem() instanceof InstantWandItem itemWand) {
+			CompoundTag tag = wand.getOrCreateTag();
+			int charge = tag.getInt("Charge");
+			tag.putInt("Charge",Math.min(charge+value,itemWand.getMaxCharge()));
+		}
+	}
+
 	public static int wandDamage(Block block) {
 		return 1;
 //		return switch(block.getDescriptionId().substring(Common.MOD_ID.length()+7)) {

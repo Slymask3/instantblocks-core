@@ -6,7 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 
-public class ForgeMenus implements IMenuHelper {
+public class ForgeMenus implements IBasicHelper {
     public void init() {
         CoreMenus.WAND_CHARGE = IForgeMenuType.create((windowId, inv, data) -> {
             Level world = inv.player.getCommandSenderWorld();

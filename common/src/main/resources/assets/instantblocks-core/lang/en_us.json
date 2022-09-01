@@ -2,12 +2,10 @@
   "itemGroup.instantblocks": "Instant Blocks",
   "itemGroup.instantblocks.general": "Instant Blocks",
 
-  "item.instantblocks-core.wand_wood": "Wooden Instant Wand",
-  "item.instantblocks-core.wand_stone": "Stone Instant Wand",
-  "item.instantblocks-core.wand_iron": "Iron Instant Wand",
-  "item.instantblocks-core.wand_gold": "Golden Instant Wand",
-  "item.instantblocks-core.wand_diamond": "Diamond Instant Wand",
-  "item.instantblocks-core.wand_netherite": "Netherite Instant Wand",
+  "item.instantblocks-core.wand_starter": "Starter Instant Wand",
+  "item.instantblocks-core.wand_advanced": "Advanced Instant Wand",
+  "item.instantblocks-core.wand_elite": "Elite Instant Wand",
+  "item.instantblocks-core.wand_creative": "Creative Instant Wand",
   "block.instantblocks-core.wand_charge": "Wand Charge Station",
 
   "ib.message.error.wand": "§cYou must use an Instant Wand",

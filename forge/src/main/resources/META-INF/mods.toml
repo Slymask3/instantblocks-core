@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[39,)"
+loaderVersion="[41,)"
 license="LGPLv3"
 issueTrackerURL="https://github.com/slymask3/instantblocks-core/issues"
 
@@ -17,7 +17,7 @@ description="Generate structures or perform actions instantaneously."
 [[dependencies.instantblocks_core]]
     modId="forge"
     mandatory=true
-    versionRange="[39,)"
+    versionRange="[41,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.instantblocks_core]]

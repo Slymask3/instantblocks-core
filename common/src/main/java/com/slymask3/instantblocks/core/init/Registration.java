@@ -15,12 +15,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 public class Registration {
     public static final class Names {
         public static final String WAND_CHARGE = "wand_charge";
-        public static final String WAND_WOOD = "wand_wood";
-        public static final String WAND_STONE = "wand_stone";
-        public static final String WAND_IRON = "wand_iron";
-        public static final String WAND_GOLD = "wand_gold";
-        public static final String WAND_DIAMOND = "wand_diamond";
-        public static final String WAND_NETHERITE = "wand_netherite";
+        public static final String WAND_STARTER = "wand_starter";
+        public static final String WAND_ADVANCED = "wand_advanced";
+        public static final String WAND_ELITE = "wand_elite";
+        public static final String WAND_CREATIVE = "wand_creative";
     }
 
     public static void registerBlocks(IRegistryHelper<Block> helper) {
@@ -31,12 +29,10 @@ public class Registration {
     public static void registerItems(IRegistryHelper<Item> helper) {
         CoreItems.init();
         helper.register(resource(Names.WAND_CHARGE), blockItem(CoreBlocks.WAND_CHARGE));
-        helper.register(resource(Names.WAND_WOOD), CoreItems.WAND_WOOD);
-        helper.register(resource(Names.WAND_STONE), CoreItems.WAND_STONE);
-        helper.register(resource(Names.WAND_IRON), CoreItems.WAND_IRON);
-        helper.register(resource(Names.WAND_GOLD), CoreItems.WAND_GOLD);
-        helper.register(resource(Names.WAND_DIAMOND), CoreItems.WAND_DIAMOND);
-        helper.register(resource(Names.WAND_NETHERITE), CoreItems.WAND_NETHERITE);
+        helper.register(resource(Names.WAND_STARTER), CoreItems.WAND_STARTER);
+        helper.register(resource(Names.WAND_ADVANCED), CoreItems.WAND_ADVANCED);
+        helper.register(resource(Names.WAND_ELITE), CoreItems.WAND_ELITE);
+        helper.register(resource(Names.WAND_CREATIVE), CoreItems.WAND_CREATIVE);
     }
 
     public static void registerTiles(IRegistryHelper<BlockEntityType<?>> helper) {

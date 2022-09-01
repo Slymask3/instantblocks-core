@@ -37,9 +37,6 @@ public class WandChargeScreen extends AbstractContainerScreen<WandChargeMenu> {
         int left = (this.width - this.imageWidth) / 2;
         int top = (this.height - this.imageHeight) / 2;
         this.blit(poseStack, left, top, 0, 0, this.imageWidth, this.imageHeight);
-
-        int progress = this.menu.getProgress();
-        Core.LOG.info("menu progress: {}",progress);
-        this.blit(poseStack, left + 77, top + 20, 176, 0, progress + 1, 16);
+        this.blit(poseStack, left + 77, top + 20, 176, 0, this.menu.getProgress() + 1, 16);
     }
 }

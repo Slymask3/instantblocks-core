@@ -6,6 +6,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
@@ -13,14 +14,24 @@ import java.util.List;
 
 public class InstantWandItem extends Item {
 	private final int maxCharge;
+	private final int chargeSpeed;
 
-	public InstantWandItem(int maxCharge) {
-		super(new Item.Properties().tab(Core.ITEM_GROUP).stacksTo(1));
+	public InstantWandItem(int maxCharge, int chargeSpeed) {
+		this(maxCharge, chargeSpeed, Rarity.COMMON);
+	}
+
+	public InstantWandItem(int maxCharge, int chargeSpeed, Rarity rarity) {
+		super(new Item.Properties().tab(Core.ITEM_GROUP).stacksTo(1).rarity(rarity));
 		this.maxCharge = maxCharge;
+		this.chargeSpeed = chargeSpeed;
 	}
 
 	public int getMaxCharge() {
 		return this.maxCharge;
+	}
+
+	public int getChargeSpeed() {
+		return this.chargeSpeed;
 	}
 
 	public static int getCharge(ItemStack itemStack) {
@@ -32,7 +43,7 @@ public class InstantWandItem extends Item {
 	}
 
 	public boolean isBarVisible(ItemStack itemStack) {
-		return true;
+		return this.maxCharge > 0;
 	}
 
 	public int getBarWidth(ItemStack itemStack) {
@@ -48,13 +59,13 @@ public class InstantWandItem extends Item {
 		return false;
 	}
 
-//	public ItemStack getDefaultInstance() {
-//		ItemStack itemStack = new ItemStack(this);
-//		itemStack.setDamageValue(itemStack.getMaxDamage());
-//		return itemStack;
-//	}
+	public boolean isCreative() {
+		return this.maxCharge == 0;
+	}
 
 	public void appendHoverText(ItemStack itemStack, Level world, List<Component> list, TooltipFlag flag) {
-		list.add(Component.translatable("ib.tooltip.wand", String.valueOf(getCharge(itemStack)), String.valueOf(this.getMaxCharge())));
+		if(this.maxCharge > 0) {
+			list.add(Component.translatable("ib.tooltip.wand", String.valueOf(getCharge(itemStack)), String.valueOf(this.getMaxCharge())));
+		}
 	}
 }
