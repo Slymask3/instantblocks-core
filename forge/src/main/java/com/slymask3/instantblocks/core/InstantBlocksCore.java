@@ -13,6 +13,7 @@ import com.slymask3.instantblocks.core.network.packet.AbstractPacket;
 import com.slymask3.instantblocks.core.platform.Services;
 import com.slymask3.instantblocks.core.registry.CoreBlocks;
 import com.slymask3.instantblocks.core.util.Helper;
+import com.slymask3.instantblocks.core.util.IModLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -20,6 +21,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
@@ -28,10 +30,12 @@ import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegisterEvent;
 import org.jetbrains.annotations.NotNull;
@@ -44,6 +48,7 @@ public class InstantBlocksCore {
 		Core.NETWORK = new PacketHandler();
 		Core.TILES = new ForgeTiles();
 		Core.MENUS = new ForgeMenus();
+		Core.LOADER = new ModLoader();
 
 		if(Services.PLATFORM.isModLoaded("cloth_config")) {
 			ClothConfig.register();
@@ -56,6 +61,7 @@ public class InstantBlocksCore {
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 		modEventBus.addListener(this::setupCommon);
 		modEventBus.addListener(this::setupRegistry);
+		modEventBus.addListener(this::afterLoad);
 		MinecraftForge.EVENT_BUS.register(this);
 
 		MinecraftForge.EVENT_BUS.addListener(this::onServerTick);
@@ -78,6 +84,10 @@ public class InstantBlocksCore {
 				Registration.registerMenus(new ForgeRegistryHelper<>(event.getForgeRegistry()));
 			}
 		}
+	}
+
+	private void afterLoad(final FMLLoadCompleteEvent event) {
+		Core.overwriteFuel();
 	}
 
 	private void onServerTick(final TickEvent.ServerTickEvent event) {
@@ -116,6 +126,12 @@ public class InstantBlocksCore {
 		}
 		public void openScreen(Player player, MenuProvider menu, BlockPos pos) {
 			NetworkHooks.openScreen((ServerPlayer)player,menu,pos);
+		}
+	}
+
+	public static class ModLoader implements IModLoader {
+		public Item getItem(String string) {
+			return ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
 		}
 	}
 }

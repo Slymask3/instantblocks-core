@@ -13,20 +13,20 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 
 public class InstantWandItem extends Item {
-	private final int maxCharge;
+	private final double maxCharge;
 	private final int chargeSpeed;
 
-	public InstantWandItem(int maxCharge, int chargeSpeed) {
+	public InstantWandItem(double maxCharge, int chargeSpeed) {
 		this(maxCharge, chargeSpeed, Rarity.COMMON);
 	}
 
-	public InstantWandItem(int maxCharge, int chargeSpeed, Rarity rarity) {
+	public InstantWandItem(double maxCharge, int chargeSpeed, Rarity rarity) {
 		super(new Item.Properties().tab(Core.ITEM_GROUP).stacksTo(1).rarity(rarity));
 		this.maxCharge = maxCharge;
 		this.chargeSpeed = chargeSpeed;
 	}
 
-	public int getMaxCharge() {
+	public double getMaxCharge() {
 		return this.maxCharge;
 	}
 
@@ -34,10 +34,10 @@ public class InstantWandItem extends Item {
 		return this.chargeSpeed;
 	}
 
-	public static int getCharge(ItemStack itemStack) {
+	public static double getCharge(ItemStack itemStack) {
 		CompoundTag tag = itemStack.getTag();
 		if(tag != null) {
-			return tag.getInt("Charge");
+			return tag.getDouble("Charge");
 		}
 		return 0;
 	}

@@ -12,6 +12,7 @@ import com.slymask3.instantblocks.core.network.packet.AbstractPacket;
 import com.slymask3.instantblocks.core.platform.Services;
 import com.slymask3.instantblocks.core.registry.CoreBlocks;
 import com.slymask3.instantblocks.core.util.Helper;
+import com.slymask3.instantblocks.core.util.IModLoader;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -31,6 +32,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
@@ -44,6 +46,7 @@ public class InstantBlocksCore implements ModInitializer {
         Core.NETWORK = new PacketHandler();
         Core.TILES = new FabricTiles();
         Core.MENUS = new FabricMenus();
+        Core.LOADER = new ModLoader();
 
         if(Services.PLATFORM.isModLoaded("cloth-config")) {
             ClothConfig.register();
@@ -54,6 +57,8 @@ public class InstantBlocksCore implements ModInitializer {
         Registration.registerItems(new FabricRegistryHelper<>(Registry.ITEM));
         Registration.registerTiles(new FabricRegistryHelper<>(Registry.BLOCK_ENTITY_TYPE));
         Registration.registerMenus(new FabricRegistryHelper<>(Registry.MENU));
+
+        Core.overwriteFuel();
 
         ServerTickEvents.END_SERVER_TICK.register((tick) -> Builder.globalTick());
         PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, entity) -> !Builder.inProgress(world,pos));
@@ -97,6 +102,12 @@ public class InstantBlocksCore implements ModInitializer {
                     buf.writeBlockPos(pos);
                 }
             });
+        }
+    }
+
+    public static class ModLoader implements IModLoader {
+        public Item getItem(String string) {
+            return Registry.ITEM.get(new ResourceLocation(string));
         }
     }
 }

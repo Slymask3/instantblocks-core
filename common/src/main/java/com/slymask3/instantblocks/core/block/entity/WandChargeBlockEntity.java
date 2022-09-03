@@ -15,22 +15,17 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.StackedContentsCompatible;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.Iterator;
-
-public class WandChargeBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer, StackedContentsCompatible {
+public class WandChargeBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer {
 	protected NonNullList<ItemStack> items;
 	public int chargeProgress;
 	public int chargeTotalTime;
-	public int chargeAmount;
+	public double chargeAmount;
 
 	public WandChargeBlockEntity(BlockPos pos, BlockState state) {
 		super(CoreTiles.WAND_CHARGE, pos, state);
@@ -55,14 +50,14 @@ public class WandChargeBlockEntity extends BaseContainerBlockEntity implements W
 		this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
 		ContainerHelper.loadAllItems(tag, this.items);
 		this.chargeProgress = tag.getShort("ChargeProgress");
-		this.chargeAmount = tag.getShort("ChargeAmount");
+		this.chargeAmount = tag.getDouble("ChargeAmount");
 		this.chargeTotalTime = tag.getShort("ChargeTotalTime");
 	}
 
 	protected void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
 		tag.putShort("ChargeProgress", (short)this.chargeProgress);
-		tag.putShort("ChargeAmount", (short)this.chargeAmount);
+		tag.putDouble("ChargeAmount", this.chargeAmount);
 		tag.putShort("ChargeTotalTime", (short)this.chargeTotalTime);
 		ContainerHelper.saveAllItems(tag, this.items);
 	}
@@ -81,19 +76,15 @@ public class WandChargeBlockEntity extends BaseContainerBlockEntity implements W
 	}
 
 	public int[] getSlotsForFace(Direction direction) {
-		return direction == Direction.DOWN ? new int[]{1} : new int[]{0,1};
+		return new int[]{0,1};
 	}
 
-	public boolean canPlaceItemThroughFace(int $$0, ItemStack $$1, Direction $$2) {
-		return this.canPlaceItem($$0, $$1);
+	public boolean canPlaceItemThroughFace(int index, ItemStack itemStack, Direction direction) {
+		return this.canPlaceItem(index, itemStack);
 	}
 
-	public boolean canTakeItemThroughFace(int $$0, ItemStack $$1, Direction $$2) {
-		if ($$2 == Direction.DOWN && $$0 == 1) {
-			return $$1.is(Items.WATER_BUCKET) || $$1.is(Items.BUCKET);
-		} else {
-			return true;
-		}
+	public boolean canTakeItemThroughFace(int index, ItemStack itemStack, Direction direction) {
+		return Helper.isWandFullyCharged(itemStack);
 	}
 
 	public int getContainerSize() {
@@ -101,40 +92,36 @@ public class WandChargeBlockEntity extends BaseContainerBlockEntity implements W
 	}
 
 	public boolean isEmpty() {
-		return false;
+		for(ItemStack itemStack : this.items) {
+			if (!itemStack.isEmpty()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
-	public ItemStack getItem(int $$0) {
-		return this.items.get($$0);
+	public ItemStack getItem(int index) {
+		return this.items.get(index);
 	}
 
-	public ItemStack removeItem(int $$0, int $$1) {
-		return ContainerHelper.removeItem(this.items, $$0, $$1);
+	public ItemStack removeItem(int index, int amount) {
+		return ContainerHelper.removeItem(this.items, index, amount);
 	}
 
-	public ItemStack removeItemNoUpdate(int $$0) {
-		return ContainerHelper.takeItem(this.items, $$0);
+	public ItemStack removeItemNoUpdate(int index) {
+		return ContainerHelper.takeItem(this.items, index);
 	}
 
-	public boolean stillValid(Player $$0) {
-		if (this.level.getBlockEntity(this.worldPosition) != this) {
+	public boolean stillValid(Player player) {
+		if(this.level.getBlockEntity(this.worldPosition) != this) {
 			return false;
 		} else {
-			return $$0.distanceToSqr((double)this.worldPosition.getX() + 0.5, (double)this.worldPosition.getY() + 0.5, (double)this.worldPosition.getZ() + 0.5) <= 64.0;
+			return player.distanceToSqr((double)this.worldPosition.getX() + 0.5, (double)this.worldPosition.getY() + 0.5, (double)this.worldPosition.getZ() + 0.5) <= 64.0;
 		}
 	}
 
 	public void clearContent() {
 		this.items.clear();
-	}
-
-	public void fillStackedContents(StackedContents $$0) {
-		Iterator var2 = this.items.iterator();
-
-		while(var2.hasNext()) {
-			ItemStack $$1 = (ItemStack)var2.next();
-			$$0.accountStack($$1);
-		}
 	}
 
 	public void setItem(int index, ItemStack itemStack) {

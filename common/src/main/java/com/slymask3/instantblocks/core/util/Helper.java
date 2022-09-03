@@ -1,5 +1,8 @@
 package com.slymask3.instantblocks.core.util;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.slymask3.instantblocks.core.Core;
 import com.slymask3.instantblocks.core.builder.BuildSound;
 import com.slymask3.instantblocks.core.item.InstantWandItem;
@@ -22,10 +25,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Random;
 
@@ -88,19 +90,27 @@ public class Helper {
 		return Core.FUEL.containsKey(itemStack.getItem());
 	}
 
-	public static int getWandCharge(ItemStack wand) {
+	public static double getWandCharge(ItemStack wand) {
 		if(wand.getItem() instanceof InstantWandItem) {
 			CompoundTag tag = wand.getOrCreateTag();
-			return tag.getInt("Charge");
+			return tag.getDouble("Charge");
 		}
 		return 0;
 	}
 
-	public static void addWandCharge(ItemStack wand, int value) {
+	public static boolean isWandFullyCharged(ItemStack wand) {
+		if(wand.getItem() instanceof InstantWandItem wandItem) {
+			double charge = getWandCharge(wand);
+			return charge >= wandItem.getMaxCharge();
+		}
+		return false;
+	}
+
+	public static void addWandCharge(ItemStack wand, double value) {
 		if(wand.getItem() instanceof InstantWandItem itemWand) {
 			CompoundTag tag = wand.getOrCreateTag();
-			int charge = tag.getInt("Charge");
-			tag.putInt("Charge",Math.min(charge+value,itemWand.getMaxCharge()));
+			double charge = tag.getDouble("Charge");
+			tag.putDouble("Charge",Math.min(charge+value,itemWand.getMaxCharge()));
 		}
 	}
 
@@ -256,5 +266,25 @@ public class Helper {
 				|| world.getBlockState(pos.east()).isFaceSturdy(world,pos,Direction.WEST)
 				|| world.getBlockState(pos.south()).isFaceSturdy(world,pos,Direction.NORTH)
 				|| world.getBlockState(pos.west()).isFaceSturdy(world,pos,Direction.EAST));
+	}
+
+	public static <T extends JsonElement> T getJsonFromFile(String path, Class<T> jsonClass, T jsonDefault) {
+		try {
+			GsonBuilder builder = new GsonBuilder();
+			builder.setPrettyPrinting();
+			Gson gson = builder.create();
+			File file = new File(path);
+			if(file.exists()) {
+				return gson.fromJson(Files.readString(file.toPath()), jsonClass);
+			} else {
+				FileWriter fileWriter = new FileWriter(file);
+				gson.toJson(jsonDefault, fileWriter);
+				fileWriter.close();
+				return jsonDefault;
+			}
+		} catch (IOException ignored) {
+			ignored.printStackTrace();
+		}
+		return null;
 	}
 }

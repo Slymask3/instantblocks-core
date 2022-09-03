@@ -57,8 +57,8 @@ public class WandChargeMenu extends AbstractContainerMenu {
         });
 
         addDataSlot(new DataSlot() {
-            public int get() { return blockEntity.chargeAmount; }
-            public void set(int value) { blockEntity.chargeAmount = value; }
+            public int get() { return (int)(blockEntity.chargeAmount * 1000); }
+            public void set(int value) { blockEntity.chargeAmount = (double)value / 1000; }
         });
     }
 

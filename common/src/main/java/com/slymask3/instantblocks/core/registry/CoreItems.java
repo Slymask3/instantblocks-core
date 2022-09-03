@@ -11,9 +11,9 @@ public class CoreItems {
     public static Item WAND_CREATIVE;
 
     public static void init() {
-        WAND_STARTER = new InstantWandItem(2000,40);
-        WAND_ADVANCED = new InstantWandItem(5000,20);
-        WAND_ELITE = new InstantWandItem(10000,10);
+        WAND_STARTER = new InstantWandItem(2000,32);
+        WAND_ADVANCED = new InstantWandItem(5000,16);
+        WAND_ELITE = new InstantWandItem(10000,8);
         WAND_CREATIVE = new InstantWandItem(0,0, Rarity.EPIC);
     }
 }
