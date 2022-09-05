@@ -28,7 +28,6 @@ public class ClothConfig implements ConfigData, IConfig {
     SectionGeneral general = new SectionGeneral();
     static class SectionGeneral {
         boolean USE_WANDS = Defaults.USE_WANDS;
-        boolean WAND_OVER_DURABILITY = Defaults.WAND_OVER_DURABILITY;
         boolean KEEP_BLOCKS = Defaults.KEEP_BLOCKS;
         boolean ALLOW_WATER_IN_NETHER = Defaults.ALLOW_WATER_IN_NETHER;
         boolean ORIGINAL_INSTANT = Defaults.ORIGINAL_INSTANT;
@@ -57,7 +56,6 @@ public class ClothConfig implements ConfigData, IConfig {
     }
 
     public boolean USE_WANDS() { return general.USE_WANDS; }
-    public boolean WAND_OVER_DURABILITY() { return general.WAND_OVER_DURABILITY; }
     public boolean KEEP_BLOCKS() { return general.KEEP_BLOCKS; }
     public boolean ALLOW_WATER_IN_NETHER() { return general.ALLOW_WATER_IN_NETHER; }
     public boolean ORIGINAL_INSTANT() { return general.ORIGINAL_INSTANT; }

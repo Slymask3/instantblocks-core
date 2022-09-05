@@ -177,4 +177,10 @@ public class Single extends Base<Single> {
         }
         return new BuildSound(this.getBlockPos(),placeSound,breakSound,0.1F,particles);
     }
+
+    public double getCharge() {
+        if(this.charge != -1) return this.charge;
+        ItemStack itemStack = new ItemStack(this.blockType.getBlock());
+        return Helper.isWandFuel(itemStack) ? Core.FUEL.get(itemStack.getItem()) : 1;
+    }
 }

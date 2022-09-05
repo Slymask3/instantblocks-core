@@ -21,6 +21,7 @@ public abstract class Base<T extends Base<T>> {
     protected BlockType blockType;
     protected Direction direction;
     protected final int flag;
+    protected double charge;
 
     public Base(Builder builder, Level world, int x, int y, int z) {
         this.builder = builder;
@@ -31,6 +32,7 @@ public abstract class Base<T extends Base<T>> {
         this.y = y;
         this.z = z;
         this.flag = 2;
+        this.charge = -1;
     }
 
     public T setBlock(BlockType blockType) {
@@ -60,6 +62,11 @@ public abstract class Base<T extends Base<T>> {
 
     public T setDirection(Direction direction) {
         this.direction = direction;
+        return (T)this;
+    }
+
+    public T setCharge(double charge) {
+        this.charge = charge;
         return (T)this;
     }
 

@@ -8,6 +8,9 @@ import com.slymask3.instantblocks.core.util.ClientHelper;
 import com.slymask3.instantblocks.core.util.Helper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 
@@ -21,6 +24,7 @@ public class Builder {
 	private final List<Single> queue;
 	private final Level world;
 	private final BlockPos originPos;
+	private final Player player;
 	private Status status;
 	private int speed;
 	private int ticks;
@@ -28,12 +32,14 @@ public class Builder {
 	private Origin priorityOrigin;
 	private int distanceMultiplier;
 	private ClientHelper.Particles particles;
+	private double charge;
 
-	private Builder(Level world, BlockPos pos) {
+	private Builder(Level world, BlockPos pos, Player player) {
 		this.queueMap = new HashMap<>();
 		this.queue = new ArrayList<>();
 		this.world = world;
 		this.originPos = pos;
+		this.player = player;
 		this.status = Status.SETUP;
 		this.speed = 1;
 		this.ticks = 0;
@@ -41,14 +47,15 @@ public class Builder {
 		this.priorityOrigin = null;
 		this.distanceMultiplier = 1;
 		this.particles = ClientHelper.Particles.PLACE_BLOCK;
+		this.charge = 0;
 	}
 
-	public static Builder setup(Level world, BlockPos pos) {
-		return new Builder(world,pos);
+	public static Builder setup(Level world, BlockPos pos, Player player) {
+		return new Builder(world,pos,player);
 	}
 
-	public static Builder setup(Level world, int x, int y, int z) {
-		return new Builder(world, new BlockPos(x,y,z));
+	public static Builder setup(Level world, int x, int y, int z, Player player) {
+		return new Builder(world, new BlockPos(x,y,z), player);
 	}
 
 	public Builder setSpeed(int speed) {
@@ -129,6 +136,7 @@ public class Builder {
 
 	public void queue(Single single, boolean replace) {
 		BlockPos pos = single.getBlockPos();
+		this.charge = single.getCharge();
 		if(replace) {
 			if(this.queueMap.containsKey(pos)) {
 				this.queueMap.replace(single.getBlockPos(),single);
@@ -141,6 +149,9 @@ public class Builder {
 	}
 
 	public void build() {
+		ItemStack itemStack = this.player.getItemInHand(InteractionHand.MAIN_HAND);
+		Helper.removeWandCharge(itemStack,this.charge);
+
 		for(Map.Entry<BlockPos,Single> set : this.queueMap.entrySet()) {
 			this.queue.add(set.getValue());
 		}
@@ -198,5 +209,10 @@ public class Builder {
 			}
 		}
 		return false;
+	}
+
+	public boolean hasEnoughCharge() {
+		ItemStack itemStack = this.player.getItemInHand(InteractionHand.MAIN_HAND);
+		return Helper.hasEnoughWandCharge(itemStack,this.charge);
 	}
 }

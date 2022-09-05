@@ -74,7 +74,7 @@ public class Sphere extends Base<Sphere> {
 
     private void queueSingle(BlockType blockType, int x, int y, int z) {
         if(blockType != null && ((blockType.isConditionalTorch() && Helper.canPlaceTorch(world,new BlockPos(x,y,z))) || !blockType.isConditionalTorch())) {
-            Single.setup(builder,world,x,y,z).setBlock(blockType).queue(this.priority,this.replace);
+            Single.setup(builder,world,x,y,z).setBlock(blockType).setCharge(charge).queue(this.priority,this.replace);
         }
     }
 }

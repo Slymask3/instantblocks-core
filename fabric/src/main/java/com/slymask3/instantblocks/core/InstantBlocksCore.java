@@ -35,6 +35,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 
 public class InstantBlocksCore implements ModInitializer {
     @Override
@@ -108,6 +109,12 @@ public class InstantBlocksCore implements ModInitializer {
     public static class ModLoader implements IModLoader {
         public Item getItem(String string) {
             return Registry.ITEM.get(new ResourceLocation(string));
+        }
+        public String getKey(Block block) {
+            return Registry.BLOCK.getKey(block).toString();
+        }
+        public String getKey(Item item) {
+            return Registry.ITEM.getKey(item).toString();
         }
     }
 }

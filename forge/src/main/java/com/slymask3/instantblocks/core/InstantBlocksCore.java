@@ -24,6 +24,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.level.BlockEvent;
@@ -132,6 +133,14 @@ public class InstantBlocksCore {
 	public static class ModLoader implements IModLoader {
 		public Item getItem(String string) {
 			return ForgeRegistries.ITEMS.getValue(new ResourceLocation(string));
+		}
+		public String getKey(Block block) {
+			ResourceLocation resourceLocation = ForgeRegistries.BLOCKS.getKey(block);
+			return resourceLocation != null ? resourceLocation.toString() : "";
+		}
+		public String getKey(Item item) {
+			ResourceLocation resourceLocation = ForgeRegistries.ITEMS.getKey(item);
+			return resourceLocation != null ? resourceLocation.toString() : "";
 		}
 	}
 }

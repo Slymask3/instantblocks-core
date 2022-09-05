@@ -3,7 +3,7 @@
     "id": "instantblocks-core",
     "version": "0.1.0",
   
-    "name": "Instant Blocks: Core",
+    "name": "Instant Blocks Core",
     "description": "Generate structures or perform actions instantaneously.",
     "authors": [
       "Slymask3"

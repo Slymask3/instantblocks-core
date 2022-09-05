@@ -9,6 +9,7 @@ import com.slymask3.instantblocks.core.util.IModLoader;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +49,7 @@ public class Core {
 
     public static void overwriteFuel() {
         JsonObject jsonDefault = new JsonObject();
-        jsonDefault.addProperty("minecraft:stone",1.000);
+        jsonDefault.addProperty(LOADER.getKey(Blocks.STONE),1.000);
         JsonObject json = Helper.getJsonFromFile(CONFIG_DIR + "/fuel.json", JsonObject.class, jsonDefault);
         if(json != null) {
             for(String key : json.keySet()) {
@@ -62,5 +63,12 @@ public class Core {
                 }
             }
         }
+    }
+
+    public static class Strings {
+        private static final String ERROR = "ib.message.error.";
+        public static final String ERROR_WAND = ERROR + "wand";
+        public static final String ERROR_WAND_CHARGE = ERROR + "wand_charge";
+        public static final String ERROR_DISABLED = ERROR + "disabled";
     }
 }

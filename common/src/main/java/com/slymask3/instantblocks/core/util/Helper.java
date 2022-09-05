@@ -114,28 +114,22 @@ public class Helper {
 		}
 	}
 
-	public static int wandDamage(Block block) {
-		return 1;
-//		return switch(block.getDescriptionId().substring(Common.MOD_ID.length()+7)) {
-//			case Names.Blocks.IB_WOOD_HOUSE -> Common.CONFIG.DAMAGE_WOODEN_HOUSE();
-//			case Names.Blocks.IB_MINING_LADDER -> Common.CONFIG.DAMAGE_MINING_LADDER();
-//			case Names.Blocks.IB_GLASS_DOME -> Common.CONFIG.DAMAGE_GLASS_DOME();
-//			case Names.Blocks.IB_FARM -> Common.CONFIG.DAMAGE_FARM();
-//			case Names.Blocks.IB_SKYDIVE -> Common.CONFIG.DAMAGE_SKYDIVE();
-//			case Names.Blocks.IB_GRINDER -> Common.CONFIG.DAMAGE_GRINDER();
-//			case Names.Blocks.IB_POOL -> Common.CONFIG.DAMAGE_POOL();
-//			case Names.Blocks.IB_ESCAPE_LADDER -> Common.CONFIG.DAMAGE_ESCAPE_LADDER();
-//			case Names.Blocks.IB_WATER -> Common.CONFIG.DAMAGE_WATER();
-//			case Names.Blocks.IB_LAVA -> Common.CONFIG.DAMAGE_LAVA();
-//			case Names.Blocks.IB_SUCTION -> Common.CONFIG.DAMAGE_SUCTION();
-//			case Names.Blocks.IB_RAIL -> Common.CONFIG.DAMAGE_RAIL();
-//			case Names.Blocks.IB_STATUE -> Common.CONFIG.DAMAGE_STATUE();
-//			case Names.Blocks.IB_HARVEST -> Common.CONFIG.DAMAGE_HARVEST();
-//			case Names.Blocks.IB_LIGHT -> Common.CONFIG.DAMAGE_LIGHT();
-//			case Names.Blocks.IB_SCHEMATIC -> Common.CONFIG.DAMAGE_SCHEMATIC();
-//			case Names.Blocks.IB_TREE -> Common.CONFIG.DAMAGE_TREE();
-//			default -> 1;
-//		};
+	public static void removeWandCharge(ItemStack wand, double value) {
+		if(wand.getItem() instanceof InstantWandItem wandItem && !wandItem.isCreative()) {
+			CompoundTag tag = wand.getOrCreateTag();
+			double charge = tag.getDouble("Charge");
+			tag.putDouble("Charge",Math.max(charge-value,0));
+		}
+	}
+
+	public static boolean hasEnoughWandCharge(ItemStack wand, double value) {
+		if(wand.getItem() instanceof InstantWandItem wandItem) {
+			if(wandItem.isCreative()) return true;
+			CompoundTag tag = wand.getOrCreateTag();
+			double charge = tag.getDouble("Charge");
+			return value >= charge;
+		}
+		return false;
 	}
 
 	public static boolean isPositive(int i) {

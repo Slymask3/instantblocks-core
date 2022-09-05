@@ -2,7 +2,6 @@ package com.slymask3.instantblocks.core.block;
 
 import com.slymask3.instantblocks.core.Core;
 import com.slymask3.instantblocks.core.builder.Builder;
-import com.slymask3.instantblocks.core.reference.Strings;
 import com.slymask3.instantblocks.core.util.ClientHelper;
 import com.slymask3.instantblocks.core.util.Helper;
 import net.minecraft.ChatFormatting;
@@ -90,7 +89,7 @@ public abstract class InstantBlock extends Block {
 
 	private boolean isDisabled(Player player) {
 		if(!this.isEnabled()) {
-			Helper.sendMessage(player,Strings.ERROR_DISABLED);
+			Helper.sendMessage(player,Core.Strings.ERROR_DISABLED);
 			return true;
 		}
 		return false;
@@ -109,10 +108,7 @@ public abstract class InstantBlock extends Block {
 			ItemStack is = player.getItemInHand(hand);
 			if(Core.CONFIG.USE_WANDS()) {
 				if(!Helper.isWand(is)) {
-					Helper.sendMessage(player, Strings.ERROR_WAND);
-					return InteractionResult.FAIL;
-				} else if(!player.isCreative() && !Core.CONFIG.WAND_OVER_DURABILITY() && Helper.wandDamage(Helper.getBlock(world,pos)) > is.getMaxDamage() - is.getDamageValue()) {
-					Helper.sendMessage(player, Strings.ERROR_WAND_DURABILITY);
+					Helper.sendMessage(player, Core.Strings.ERROR_WAND);
 					return InteractionResult.FAIL;
 				}
 			}
@@ -142,10 +138,7 @@ public abstract class InstantBlock extends Block {
 		ItemStack is = player.getItemInHand(hand);
 		if(Core.CONFIG.USE_WANDS()) {
 			if(!Helper.isWand(is)) {
-				Helper.sendMessage(player, Strings.ERROR_WAND);
-				return InteractionResult.FAIL;
-			} else if(!player.isCreative() && !Core.CONFIG.WAND_OVER_DURABILITY() && Helper.wandDamage(Helper.getBlock(world,pos)) > is.getMaxDamage() - is.getDamageValue()) {
-				Helper.sendMessage(player, Strings.ERROR_WAND_DURABILITY);
+				Helper.sendMessage(player, Core.Strings.ERROR_WAND);
 				return InteractionResult.FAIL;
 			}
 		}
@@ -161,7 +154,7 @@ public abstract class InstantBlock extends Block {
 
 	public InteractionResult activate(Level world, BlockPos pos, Player player) {
 		if(build(world, pos.getX(), pos.getY(), pos.getZ(), player)) {
-			afterBuild(world, pos, player);
+			postBuild(world, pos, player);
 			return InteractionResult.SUCCESS;
 		} else {
 			return InteractionResult.FAIL;
@@ -173,17 +166,9 @@ public abstract class InstantBlock extends Block {
 		return true;
 	}
 
-	private void afterBuild(Level world, BlockPos pos, Player player) {
+	private void postBuild(Level world, BlockPos pos, Player player) {
 		Helper.sendMessage(player,this.createMessage,this.createVariable);
 		Helper.showParticles(world, pos, ClientHelper.Particles.GENERATE);
 		Helper.giveExp(world, player, Core.CONFIG.XP_AMOUNT());
-		if(Core.CONFIG.USE_WANDS()) {
-			ItemStack is = player.getItemInHand(InteractionHand.MAIN_HAND);
-			if(Helper.isWand(is)) {
-				is.hurtAndBreak(Helper.wandDamage(this), player, (entity) -> {
-					entity.broadcastBreakEvent(InteractionHand.MAIN_HAND);
-				});
-			}
-		}
 	}
 }

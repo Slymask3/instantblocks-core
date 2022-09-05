@@ -4,7 +4,6 @@ public interface IConfig {
     default void reload() {}
 
     default boolean USE_WANDS() { return Defaults.USE_WANDS; }
-    default boolean WAND_OVER_DURABILITY() { return Defaults.WAND_OVER_DURABILITY; }
     default boolean KEEP_BLOCKS() { return Defaults.KEEP_BLOCKS; }
     default boolean ALLOW_WATER_IN_NETHER() { return Defaults.ALLOW_WATER_IN_NETHER; }
     default boolean ORIGINAL_INSTANT() { return Defaults.ORIGINAL_INSTANT; }
@@ -21,7 +20,6 @@ public interface IConfig {
 
     class Defaults {
         public static boolean USE_WANDS = true;
-        public static boolean WAND_OVER_DURABILITY = false;
         public static boolean KEEP_BLOCKS = false;
         public static boolean ALLOW_WATER_IN_NETHER = false;
         public static boolean ORIGINAL_INSTANT = false;
