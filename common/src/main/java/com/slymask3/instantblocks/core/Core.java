@@ -1,6 +1,5 @@
 package com.slymask3.instantblocks.core;
 
-import com.google.gson.JsonObject;
 import com.slymask3.instantblocks.core.config.IConfig;
 import com.slymask3.instantblocks.core.init.IBasicHelper;
 import com.slymask3.instantblocks.core.network.IPacketHandler;
@@ -8,8 +7,6 @@ import com.slymask3.instantblocks.core.util.Helper;
 import com.slymask3.instantblocks.core.util.IModLoader;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Blocks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,33 +33,6 @@ public class Core {
         Helper.createDirectory(CONFIG_DIR);
         CONFIG = new IConfig(){};
         FUEL = new HashMap<>();
-        setupFuel();
-    }
-
-    private static void setupFuel() {
-        FUEL.put(Items.BONE,7.0);
-        FUEL.put(Items.DIAMOND,123.0);
-        FUEL.put(Items.IRON_INGOT,100.0);
-        FUEL.put(Items.GLASS,1.0);
-        FUEL.put(Items.GLASS_PANE,0.375);
-    }
-
-    public static void overwriteFuel() {
-        JsonObject jsonDefault = new JsonObject();
-        jsonDefault.addProperty(LOADER.getKey(Blocks.STONE),1.000);
-        JsonObject json = Helper.getJsonFromFile(CONFIG_DIR + "/fuel.json", JsonObject.class, jsonDefault);
-        if(json != null) {
-            for(String key : json.keySet()) {
-                Item item = LOADER.getItem(key);
-                if(!item.equals(Items.AIR)) {
-                    if(FUEL.containsKey(item)) {
-                        FUEL.replace(item,json.get(key).getAsDouble());
-                    } else {
-                        FUEL.put(item,json.get(key).getAsDouble());
-                    }
-                }
-            }
-        }
     }
 
     public static class Strings {

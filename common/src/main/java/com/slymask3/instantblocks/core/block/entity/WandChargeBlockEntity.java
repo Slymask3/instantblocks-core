@@ -4,7 +4,7 @@ import com.slymask3.instantblocks.core.Core;
 import com.slymask3.instantblocks.core.inventory.WandChargeContainer;
 import com.slymask3.instantblocks.core.item.InstantWandItem;
 import com.slymask3.instantblocks.core.registry.CoreTiles;
-import com.slymask3.instantblocks.core.util.Helper;
+import com.slymask3.instantblocks.core.util.WandHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -84,7 +84,7 @@ public class WandChargeBlockEntity extends BaseContainerBlockEntity implements W
 	}
 
 	public boolean canTakeItemThroughFace(int index, ItemStack itemStack, Direction direction) {
-		return Helper.isWandFullyCharged(itemStack);
+		return WandHelper.isWandFullyCharged(itemStack);
 	}
 
 	public int getContainerSize() {
@@ -129,7 +129,7 @@ public class WandChargeBlockEntity extends BaseContainerBlockEntity implements W
 	}
 
 	public boolean canPlaceItem(int index, ItemStack itemStack) {
-		return index == 0 && Helper.isWandFuel(itemStack) || index == 1 && Helper.isWand(itemStack);
+		return index == 0 && WandHelper.isWandFuel(itemStack) || index == 1 && WandHelper.isWand(itemStack);
 	}
 
 	public static void serverTick(Level world, BlockPos pos, BlockState state, WandChargeBlockEntity entity) {
@@ -138,7 +138,7 @@ public class WandChargeBlockEntity extends BaseContainerBlockEntity implements W
 		ItemStack fuel = entity.items.get(0);
 		ItemStack wand = entity.items.get(1);
 
-		if(!wand.equals(ItemStack.EMPTY) && wand.getItem() instanceof InstantWandItem wandItem && Helper.getWandCharge(wand) < wandItem.getMaxCharge()) {
+		if(!wand.equals(ItemStack.EMPTY) && wand.getItem() instanceof InstantWandItem wandItem && WandHelper.getWandCharge(wand) < wandItem.getMaxCharge()) {
 			entity.chargeTotalTime = wandItem.getChargeSpeed();
 
 			//take fuel
@@ -157,7 +157,7 @@ public class WandChargeBlockEntity extends BaseContainerBlockEntity implements W
 				++entity.chargeProgress;
 				if(entity.chargeProgress >= entity.chargeTotalTime) {
 					entity.chargeProgress = 0;
-					Helper.addWandCharge(wand,entity.chargeAmount);
+					WandHelper.addWandCharge(wand,entity.chargeAmount);
 					isChanged = true;
 				}
 			}

@@ -2,7 +2,7 @@ package com.slymask3.instantblocks.core.inventory;
 
 import com.slymask3.instantblocks.core.block.entity.WandChargeBlockEntity;
 import com.slymask3.instantblocks.core.registry.CoreContainers;
-import com.slymask3.instantblocks.core.util.Helper;
+import com.slymask3.instantblocks.core.util.WandHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -23,13 +23,13 @@ public class WandChargeContainer extends AbstractContainerMenu {
 
         this.addSlot(new Slot(blockEntity, 0, 53, 20) {
             public boolean mayPlace(ItemStack itemStack) {
-                return Helper.isWandFuel(itemStack);
+                return WandHelper.isWandFuel(itemStack);
             }
         });
 
         this.addSlot(new Slot(blockEntity, 1, 107, 20) {
             public boolean mayPlace(ItemStack itemStack) {
-                return Helper.isWand(itemStack);
+                return WandHelper.isWand(itemStack);
             }
             public int getMaxStackSize(ItemStack itemStack) {
                 return 1;
@@ -72,11 +72,11 @@ public class WandChargeContainer extends AbstractContainerMenu {
                 if(!this.moveItemStackTo(original, 2, 38, true)) {
                     return ItemStack.EMPTY;
                 }
-            } else if(Helper.isWandFuel(original)) {
+            } else if(WandHelper.isWandFuel(original)) {
                 if(!this.moveItemStackTo(original, 0, 1, true)) {
                     return ItemStack.EMPTY;
                 }
-            } else if(Helper.isWand(original)) {
+            } else if(WandHelper.isWand(original)) {
                 if(!this.moveItemStackTo(original, 1, 2, true)) {
                     return ItemStack.EMPTY;
                 }

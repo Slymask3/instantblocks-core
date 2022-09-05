@@ -7,6 +7,7 @@ import com.slymask3.instantblocks.core.builder.BuildSound;
 import com.slymask3.instantblocks.core.builder.Builder;
 import com.slymask3.instantblocks.core.util.ClientHelper;
 import com.slymask3.instantblocks.core.util.Helper;
+import com.slymask3.instantblocks.core.util.WandHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
@@ -181,6 +182,6 @@ public class Single extends Base<Single> {
     public double getCharge() {
         if(this.charge != -1) return this.charge;
         ItemStack itemStack = new ItemStack(this.blockType.getBlock());
-        return Helper.isWandFuel(itemStack) ? Core.FUEL.get(itemStack.getItem()) : 1;
+        return WandHelper.isWandFuel(itemStack) ? Core.FUEL.get(itemStack.getItem()) : 1;
     }
 }

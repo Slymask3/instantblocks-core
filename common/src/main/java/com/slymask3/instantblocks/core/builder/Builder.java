@@ -6,6 +6,7 @@ import com.slymask3.instantblocks.core.builder.type.Single;
 import com.slymask3.instantblocks.core.network.packet.client.SoundPacket;
 import com.slymask3.instantblocks.core.util.ClientHelper;
 import com.slymask3.instantblocks.core.util.Helper;
+import com.slymask3.instantblocks.core.util.WandHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -150,7 +151,7 @@ public class Builder {
 
 	public void build() {
 		ItemStack itemStack = this.player.getItemInHand(InteractionHand.MAIN_HAND);
-		Helper.removeWandCharge(itemStack,this.charge);
+		WandHelper.removeWandCharge(itemStack,this.charge);
 
 		for(Map.Entry<BlockPos,Single> set : this.queueMap.entrySet()) {
 			this.queue.add(set.getValue());
@@ -213,6 +214,6 @@ public class Builder {
 
 	public boolean hasEnoughCharge() {
 		ItemStack itemStack = this.player.getItemInHand(InteractionHand.MAIN_HAND);
-		return Helper.hasEnoughWandCharge(itemStack,this.charge);
+		return WandHelper.hasEnoughWandCharge(itemStack,this.charge);
 	}
 }

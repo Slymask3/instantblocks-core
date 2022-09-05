@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.slymask3.instantblocks.core.Core;
 import com.slymask3.instantblocks.core.builder.BuildSound;
-import com.slymask3.instantblocks.core.item.InstantWandItem;
 import com.slymask3.instantblocks.core.network.packet.client.MessagePacket;
 import com.slymask3.instantblocks.core.network.packet.client.ParticlePacket;
 import com.slymask3.instantblocks.core.network.packet.client.SoundPacket;
@@ -78,59 +77,6 @@ public class Helper {
 				}
 			}
 		}
-	}
-
-	public static boolean isWand(ItemStack itemStack) {
-		if(itemStack == null) return false;
-		return itemStack.getItem() instanceof InstantWandItem;
-	}
-
-	public static boolean isWandFuel(ItemStack itemStack) {
-		if(itemStack == null) return false;
-		return Core.FUEL.containsKey(itemStack.getItem());
-	}
-
-	public static double getWandCharge(ItemStack wand) {
-		if(wand.getItem() instanceof InstantWandItem) {
-			CompoundTag tag = wand.getOrCreateTag();
-			return tag.getDouble("Charge");
-		}
-		return 0;
-	}
-
-	public static boolean isWandFullyCharged(ItemStack wand) {
-		if(wand.getItem() instanceof InstantWandItem wandItem) {
-			double charge = getWandCharge(wand);
-			return charge >= wandItem.getMaxCharge();
-		}
-		return false;
-	}
-
-	public static void addWandCharge(ItemStack wand, double value) {
-		if(wand.getItem() instanceof InstantWandItem wandItem && !wandItem.isCreative()) {
-			CompoundTag tag = wand.getOrCreateTag();
-			double charge = tag.getDouble("Charge");
-			tag.putDouble("Charge",Math.min(charge+value,wandItem.getMaxCharge()));
-		}
-	}
-
-	public static void removeWandCharge(ItemStack wand, double value) {
-		if(wand.getItem() instanceof InstantWandItem wandItem && !wandItem.isCreative()) {
-			CompoundTag tag = wand.getOrCreateTag();
-			double charge = tag.getDouble("Charge");
-			tag.putDouble("Charge",Math.max(charge-value,0));
-		}
-	}
-
-	public static boolean hasEnoughWandCharge(ItemStack wand, double value) {
-		if(wand.getItem() instanceof InstantWandItem wandItem) {
-			if(wandItem.isCreative()) return true;
-			CompoundTag tag = wand.getOrCreateTag();
-			double charge = tag.getDouble("Charge");
-			Core.LOG.info("hasEnoughWandCharge() - value: {}, charge: {}", value, charge);
-			return value <= charge;
-		}
-		return false;
 	}
 
 	public static boolean isPositive(int i) {
