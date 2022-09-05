@@ -136,7 +136,7 @@ public class Builder {
 
 	public void queue(Single single, boolean replace) {
 		BlockPos pos = single.getBlockPos();
-		this.charge = single.getCharge();
+		this.charge += single.getCharge();
 		if(replace) {
 			if(this.queueMap.containsKey(pos)) {
 				this.queueMap.replace(single.getBlockPos(),single);

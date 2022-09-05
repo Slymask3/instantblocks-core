@@ -46,7 +46,7 @@ public class InstantBlocksCore implements ModInitializer {
         Core.ITEM_GROUP = FabricItemGroupBuilder.build(new ResourceLocation(Core.MOD_BASE, "general"), () -> new ItemStack(CoreBlocks.WAND_CHARGE));
         Core.NETWORK = new PacketHandler();
         Core.TILES = new FabricTiles();
-        Core.MENUS = new FabricMenus();
+        Core.CONTAINERS = new FabricMenus();
         Core.LOADER = new ModLoader();
 
         if(Services.PLATFORM.isModLoaded("cloth-config")) {
@@ -57,7 +57,7 @@ public class InstantBlocksCore implements ModInitializer {
         Registration.registerBlocks(new FabricRegistryHelper<>(Registry.BLOCK));
         Registration.registerItems(new FabricRegistryHelper<>(Registry.ITEM));
         Registration.registerTiles(new FabricRegistryHelper<>(Registry.BLOCK_ENTITY_TYPE));
-        Registration.registerMenus(new FabricRegistryHelper<>(Registry.MENU));
+        Registration.registerContainers(new FabricRegistryHelper<>(Registry.MENU));
 
         Core.overwriteFuel();
 

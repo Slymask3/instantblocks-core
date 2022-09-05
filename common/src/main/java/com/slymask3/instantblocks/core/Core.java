@@ -27,7 +27,7 @@ public class Core {
     public static CreativeModeTab ITEM_GROUP;
     public static IPacketHandler NETWORK;
     public static IBasicHelper TILES;
-    public static IBasicHelper MENUS;
+    public static IBasicHelper CONTAINERS;
     public static IConfig CONFIG;
     public static IModLoader LOADER;
     public static Map<Item,Double> FUEL;

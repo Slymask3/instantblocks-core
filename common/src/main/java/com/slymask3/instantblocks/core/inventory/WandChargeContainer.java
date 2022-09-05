@@ -1,7 +1,7 @@
 package com.slymask3.instantblocks.core.inventory;
 
 import com.slymask3.instantblocks.core.block.entity.WandChargeBlockEntity;
-import com.slymask3.instantblocks.core.registry.CoreMenus;
+import com.slymask3.instantblocks.core.registry.CoreContainers;
 import com.slymask3.instantblocks.core.util.Helper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
@@ -12,12 +12,12 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class WandChargeMenu extends AbstractContainerMenu {
+public class WandChargeContainer extends AbstractContainerMenu {
     protected final Level level;
     private final WandChargeBlockEntity blockEntity;
 
-    public WandChargeMenu(int windowId, Inventory inventory, Level world, BlockPos pos) {
-        super(CoreMenus.WAND_CHARGE, windowId);
+    public WandChargeContainer(int windowId, Inventory inventory, Level world, BlockPos pos) {
+        super(CoreContainers.WAND_CHARGE_STATION, windowId);
         this.blockEntity = (WandChargeBlockEntity)world.getBlockEntity(pos);
         this.level = inventory.player.level;
 

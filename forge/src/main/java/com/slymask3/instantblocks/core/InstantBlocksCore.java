@@ -48,7 +48,7 @@ public class InstantBlocksCore {
 		Core.ITEM_GROUP = new CreativeModeTab(CreativeModeTab.TABS.length, Core.MOD_BASE) { public @NotNull ItemStack makeIcon() { return new ItemStack(CoreBlocks.WAND_CHARGE); } };
 		Core.NETWORK = new PacketHandler();
 		Core.TILES = new ForgeTiles();
-		Core.MENUS = new ForgeMenus();
+		Core.CONTAINERS = new ForgeMenus();
 		Core.LOADER = new ModLoader();
 
 		if(Services.PLATFORM.isModLoaded("cloth_config")) {
@@ -82,7 +82,7 @@ public class InstantBlocksCore {
 			} else if(event.getForgeRegistry().getRegistryKey().equals(Registry.BLOCK_ENTITY_TYPE_REGISTRY)) {
 				Registration.registerTiles(new ForgeRegistryHelper<>(event.getForgeRegistry()));
 			} else if(event.getForgeRegistry().getRegistryKey().equals(Registry.MENU_REGISTRY)) {
-				Registration.registerMenus(new ForgeRegistryHelper<>(event.getForgeRegistry()));
+				Registration.registerContainers(new ForgeRegistryHelper<>(event.getForgeRegistry()));
 			}
 		}
 	}

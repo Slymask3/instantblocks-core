@@ -3,17 +3,17 @@ package com.slymask3.instantblocks.core.gui.screens;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.slymask3.instantblocks.core.Core;
-import com.slymask3.instantblocks.core.inventory.WandChargeMenu;
+import com.slymask3.instantblocks.core.inventory.WandChargeContainer;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class WandChargeScreen extends AbstractContainerScreen<WandChargeMenu> {
+public class WandChargeScreen extends AbstractContainerScreen<WandChargeContainer> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(Core.FABRIC_MOD_ID,"textures/gui/container/wand.png");
 
-    public WandChargeScreen(WandChargeMenu menu, Inventory inventory, Component title) {
+    public WandChargeScreen(WandChargeContainer menu, Inventory inventory, Component title) {
         super(menu,inventory,title);
         this.imageHeight = 133;
     }

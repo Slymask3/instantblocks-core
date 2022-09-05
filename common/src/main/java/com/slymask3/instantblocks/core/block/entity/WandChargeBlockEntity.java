@@ -1,7 +1,7 @@
 package com.slymask3.instantblocks.core.block.entity;
 
 import com.slymask3.instantblocks.core.Core;
-import com.slymask3.instantblocks.core.inventory.WandChargeMenu;
+import com.slymask3.instantblocks.core.inventory.WandChargeContainer;
 import com.slymask3.instantblocks.core.item.InstantWandItem;
 import com.slymask3.instantblocks.core.registry.CoreTiles;
 import com.slymask3.instantblocks.core.util.Helper;
@@ -72,7 +72,7 @@ public class WandChargeBlockEntity extends BaseContainerBlockEntity implements W
 	}
 
 	protected AbstractContainerMenu createMenu(int windowId, Inventory inventory) {
-		return new WandChargeMenu(windowId, inventory, getLevel(), getBlockPos());
+		return new WandChargeContainer(windowId, inventory, getLevel(), getBlockPos());
 	}
 
 	public int[] getSlotsForFace(Direction direction) {

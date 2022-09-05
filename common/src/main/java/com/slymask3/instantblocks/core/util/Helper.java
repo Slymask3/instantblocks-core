@@ -107,10 +107,10 @@ public class Helper {
 	}
 
 	public static void addWandCharge(ItemStack wand, double value) {
-		if(wand.getItem() instanceof InstantWandItem itemWand) {
+		if(wand.getItem() instanceof InstantWandItem wandItem && !wandItem.isCreative()) {
 			CompoundTag tag = wand.getOrCreateTag();
 			double charge = tag.getDouble("Charge");
-			tag.putDouble("Charge",Math.min(charge+value,itemWand.getMaxCharge()));
+			tag.putDouble("Charge",Math.min(charge+value,wandItem.getMaxCharge()));
 		}
 	}
 
@@ -127,7 +127,8 @@ public class Helper {
 			if(wandItem.isCreative()) return true;
 			CompoundTag tag = wand.getOrCreateTag();
 			double charge = tag.getDouble("Charge");
-			return value >= charge;
+			Core.LOG.info("hasEnoughWandCharge() - value: {}, charge: {}", value, charge);
+			return value <= charge;
 		}
 		return false;
 	}
@@ -276,9 +277,7 @@ public class Helper {
 				fileWriter.close();
 				return jsonDefault;
 			}
-		} catch (IOException ignored) {
-			ignored.printStackTrace();
-		}
+		} catch (IOException ignored) {}
 		return null;
 	}
 }

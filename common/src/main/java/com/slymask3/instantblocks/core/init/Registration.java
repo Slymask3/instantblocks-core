@@ -2,8 +2,8 @@ package com.slymask3.instantblocks.core.init;
 
 import com.slymask3.instantblocks.core.Core;
 import com.slymask3.instantblocks.core.registry.CoreBlocks;
+import com.slymask3.instantblocks.core.registry.CoreContainers;
 import com.slymask3.instantblocks.core.registry.CoreItems;
-import com.slymask3.instantblocks.core.registry.CoreMenus;
 import com.slymask3.instantblocks.core.registry.CoreTiles;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
@@ -40,9 +40,9 @@ public class Registration {
         helper.register(resource(Names.WAND_CHARGE), CoreTiles.WAND_CHARGE);
     }
 
-    public static void registerMenus(IRegistryHelper<MenuType<?>> helper) {
-        Core.MENUS.init();
-        helper.register(resource(Names.WAND_CHARGE), CoreMenus.WAND_CHARGE);
+    public static void registerContainers(IRegistryHelper<MenuType<?>> helper) {
+        Core.CONTAINERS.init();
+        helper.register(resource(Names.WAND_CHARGE), CoreContainers.WAND_CHARGE_STATION);
     }
 
     private static ResourceLocation resource(String name) {
