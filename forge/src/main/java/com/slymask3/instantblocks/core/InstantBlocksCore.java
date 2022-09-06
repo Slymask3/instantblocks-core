@@ -14,10 +14,14 @@ import com.slymask3.instantblocks.core.platform.Services;
 import com.slymask3.instantblocks.core.registry.CoreBlocks;
 import com.slymask3.instantblocks.core.util.Helper;
 import com.slymask3.instantblocks.core.util.IModLoader;
+import com.slymask3.instantblocks.core.util.WandHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
@@ -26,12 +30,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkHooks;
@@ -39,6 +43,7 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegisterEvent;
+import net.minecraftforge.registries.tags.ITag;
 import org.jetbrains.annotations.NotNull;
 
 @Mod(Core.FORGE_MOD_ID)
@@ -62,9 +67,9 @@ public class InstantBlocksCore {
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 		modEventBus.addListener(this::setupCommon);
 		modEventBus.addListener(this::setupRegistry);
-		modEventBus.addListener(this::afterLoad);
 		MinecraftForge.EVENT_BUS.register(this);
 
+		MinecraftForge.EVENT_BUS.addListener(this::onTagsLoaded);
 		MinecraftForge.EVENT_BUS.addListener(this::onServerTick);
 		MinecraftForge.EVENT_BUS.addListener(this::onBlockBreak);
 	}
@@ -87,8 +92,8 @@ public class InstantBlocksCore {
 		}
 	}
 
-	private void afterLoad(final FMLLoadCompleteEvent event) {
-		Core.overwriteFuel();
+	private void onTagsLoaded(final TagsUpdatedEvent event) {
+		WandHelper.setup();
 	}
 
 	private void onServerTick(final TickEvent.ServerTickEvent event) {
@@ -141,6 +146,25 @@ public class InstantBlocksCore {
 		public String getKey(Item item) {
 			ResourceLocation resourceLocation = ForgeRegistries.ITEMS.getKey(item);
 			return resourceLocation != null ? resourceLocation.toString() : "";
+		}
+		public TagKey<Item> getItemTagKey(String tag) {
+			return ItemTags.create(new ResourceLocation(tag));
+		}
+		public TagKey<Block> getBlockTagKey(String tag) {
+			return BlockTags.create(new ResourceLocation(tag));
+		}
+		public void getItemsByTag(TagKey<?> tag, ItemCallable itemCallable) {
+			if(tag.registry().equals(ForgeRegistries.ITEMS.getRegistryKey())) {
+				ITag<Item> items = ForgeRegistries.ITEMS.tags().getTag((TagKey<Item>)tag);
+				for(Item item : items) {
+					itemCallable.call(item);
+				}
+			} else if(tag.registry().equals(ForgeRegistries.BLOCKS.getRegistryKey())) {
+				ITag<Block> blocks = ForgeRegistries.BLOCKS.tags().getTag((TagKey<Block>)tag);
+				for(Block block : blocks) {
+					itemCallable.call(block.asItem());
+				}
+			}
 		}
 	}
 }

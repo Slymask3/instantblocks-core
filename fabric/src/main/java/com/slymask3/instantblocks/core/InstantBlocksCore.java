@@ -13,21 +13,26 @@ import com.slymask3.instantblocks.core.platform.Services;
 import com.slymask3.instantblocks.core.registry.CoreBlocks;
 import com.slymask3.instantblocks.core.util.Helper;
 import com.slymask3.instantblocks.core.util.IModLoader;
+import com.slymask3.instantblocks.core.util.WandHelper;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -36,6 +41,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+
+import java.util.Optional;
 
 public class InstantBlocksCore implements ModInitializer {
     @Override
@@ -59,8 +66,7 @@ public class InstantBlocksCore implements ModInitializer {
         Registration.registerTiles(new FabricRegistryHelper<>(Registry.BLOCK_ENTITY_TYPE));
         Registration.registerContainers(new FabricRegistryHelper<>(Registry.MENU));
 
-        Core.overwriteFuel();
-
+        CommonLifecycleEvents.TAGS_LOADED.register((event,bool) -> WandHelper.setup());
         ServerTickEvents.END_SERVER_TICK.register((tick) -> Builder.globalTick());
         PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, entity) -> !Builder.inProgress(world,pos));
 
@@ -115,6 +121,35 @@ public class InstantBlocksCore implements ModInitializer {
         }
         public String getKey(Item item) {
             return Registry.ITEM.getKey(item).toString();
+        }
+        public TagKey<Item> getItemTagKey(String tag) {
+            return TagKey.create(Registry.ITEM_REGISTRY,new ResourceLocation(tag));
+        }
+        public TagKey<Block> getBlockTagKey(String tag) {
+            return TagKey.create(Registry.BLOCK_REGISTRY,new ResourceLocation(tag));
+        }
+        public void getItemsByTag(TagKey<?> tag, ItemCallable itemCallable) {
+            if(tag.registry().equals(Registry.ITEM.key())) {
+                Core.LOG.info("tag: {}",tag);
+                tag.registry().location();
+                Optional<HolderSet.Named<Item>> holder = Registry.ITEM.getTag((TagKey<Item>)tag);
+                Core.LOG.info("holder: {}",holder);
+                if(holder.isPresent()) {
+                    for(Holder<Item> item : holder.get()) {
+                        itemCallable.call(item.value());
+                    }
+                }
+            } else if(tag.registry().equals(Registry.BLOCK.key())) {
+                Core.LOG.info("tag: {}",tag);
+                tag.registry().location();
+                Optional<HolderSet.Named<Block>> holder = Registry.BLOCK.getTag((TagKey<Block>)tag);
+                Core.LOG.info("holder: {}",holder);
+                if(holder.isPresent()) {
+                    for(Holder<Block> block : holder.get()) {
+                        itemCallable.call(block.value().asItem());
+                    }
+                }
+            }
         }
     }
 }
