@@ -1,17 +1,14 @@
 package com.slymask3.instantblocks.core;
 
+import com.slymask3.instantblocks.core.builder.Fuel;
 import com.slymask3.instantblocks.core.config.IConfig;
 import com.slymask3.instantblocks.core.init.IBasicHelper;
 import com.slymask3.instantblocks.core.network.IPacketHandler;
 import com.slymask3.instantblocks.core.util.Helper;
 import com.slymask3.instantblocks.core.util.IModLoader;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class Core {
     public static final String MOD_BASE = "instantblocks";
@@ -27,12 +24,11 @@ public class Core {
     public static IBasicHelper CONTAINERS;
     public static IConfig CONFIG;
     public static IModLoader LOADER;
-    public static Map<Item,Double> FUEL;
+    public static Fuel FUEL;
 
     public static void init() {
         Helper.createDirectory(CONFIG_DIR);
         CONFIG = new IConfig(){};
-        FUEL = new HashMap<>();
     }
 
     public static class Strings {

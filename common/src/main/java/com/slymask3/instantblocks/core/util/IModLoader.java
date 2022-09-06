@@ -12,11 +12,6 @@ public interface IModLoader {
     TagKey<Block> getBlockTagKey(String string);
     void getItemsByTag(TagKey<?> tag, ItemCallable itemCallable);
 
-    default void getItemsByTag(String tag, ItemCallable itemCallable) {
-        this.getItemsByTag(this.getItemTagKey(tag),itemCallable);
-        this.getItemsByTag(this.getBlockTagKey(tag),itemCallable);
-    }
-
     interface ItemCallable {
         void call(Item item);
     }
