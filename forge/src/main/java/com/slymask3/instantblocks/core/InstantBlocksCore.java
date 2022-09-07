@@ -1,6 +1,7 @@
 package com.slymask3.instantblocks.core;
 
 import com.slymask3.instantblocks.core.builder.Builder;
+import com.slymask3.instantblocks.core.builder.Fuel;
 import com.slymask3.instantblocks.core.config.ClothConfig;
 import com.slymask3.instantblocks.core.config.ForgeConfig;
 import com.slymask3.instantblocks.core.init.ForgeMenus;
@@ -14,7 +15,6 @@ import com.slymask3.instantblocks.core.platform.Services;
 import com.slymask3.instantblocks.core.registry.CoreBlocks;
 import com.slymask3.instantblocks.core.util.Helper;
 import com.slymask3.instantblocks.core.util.IModLoader;
-import com.slymask3.instantblocks.core.util.WandHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -32,6 +32,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -70,6 +71,7 @@ public class InstantBlocksCore {
 		MinecraftForge.EVENT_BUS.register(this);
 
 		MinecraftForge.EVENT_BUS.addListener(this::onTagsLoaded);
+		MinecraftForge.EVENT_BUS.addListener(this::onItemTooltip);
 		MinecraftForge.EVENT_BUS.addListener(this::onServerTick);
 		MinecraftForge.EVENT_BUS.addListener(this::onBlockBreak);
 	}
@@ -93,7 +95,11 @@ public class InstantBlocksCore {
 	}
 
 	private void onTagsLoaded(final TagsUpdatedEvent event) {
-		WandHelper.setup();
+		Fuel.setup();
+	}
+
+	private void onItemTooltip(final ItemTooltipEvent event) {
+		Fuel.addTooltip(event.getItemStack(),event.getToolTip());
 	}
 
 	private void onServerTick(final TickEvent.ServerTickEvent event) {
@@ -153,7 +159,7 @@ public class InstantBlocksCore {
 		public TagKey<Block> getBlockTagKey(String tag) {
 			return BlockTags.create(new ResourceLocation(tag));
 		}
-		public void getItemsByTag(TagKey<?> tag, ItemCallable itemCallable) {
+		public void forEachItem(TagKey<?> tag, ItemCallable itemCallable) {
 			if(tag.registry().equals(ForgeRegistries.ITEMS.getRegistryKey())) {
 				ITag<Item> items = ForgeRegistries.ITEMS.tags().getTag((TagKey<Item>)tag);
 				for(Item item : items) {

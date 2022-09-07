@@ -1,6 +1,7 @@
 package com.slymask3.instantblocks.core;
 
 import com.slymask3.instantblocks.core.builder.Builder;
+import com.slymask3.instantblocks.core.builder.Fuel;
 import com.slymask3.instantblocks.core.config.ClothConfig;
 import com.slymask3.instantblocks.core.handler.LootHandler;
 import com.slymask3.instantblocks.core.init.FabricMenus;
@@ -13,8 +14,8 @@ import com.slymask3.instantblocks.core.platform.Services;
 import com.slymask3.instantblocks.core.registry.CoreBlocks;
 import com.slymask3.instantblocks.core.util.Helper;
 import com.slymask3.instantblocks.core.util.IModLoader;
-import com.slymask3.instantblocks.core.util.WandHelper;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
@@ -66,9 +67,10 @@ public class InstantBlocksCore implements ModInitializer {
         Registration.registerTiles(new FabricRegistryHelper<>(Registry.BLOCK_ENTITY_TYPE));
         Registration.registerContainers(new FabricRegistryHelper<>(Registry.MENU));
 
-        CommonLifecycleEvents.TAGS_LOADED.register((event,bool) -> WandHelper.setup());
+        CommonLifecycleEvents.TAGS_LOADED.register((event,bool) -> Fuel.setup());
         ServerTickEvents.END_SERVER_TICK.register((tick) -> Builder.globalTick());
         PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, entity) -> !Builder.inProgress(world,pos));
+        ItemTooltipCallback.EVENT.register((itemStack,contents,lines) -> Fuel.addTooltip(itemStack,lines));
 
         LootHandler.register();
     }
@@ -128,7 +130,7 @@ public class InstantBlocksCore implements ModInitializer {
         public TagKey<Block> getBlockTagKey(String tag) {
             return TagKey.create(Registry.BLOCK_REGISTRY,new ResourceLocation(tag));
         }
-        public void getItemsByTag(TagKey<?> tag, ItemCallable itemCallable) {
+        public void forEachItem(TagKey<?> tag, ItemCallable itemCallable) {
             if(tag.registry().equals(Registry.ITEM.key())) {
                 Core.LOG.info("tag: {}",tag);
                 tag.registry().location();

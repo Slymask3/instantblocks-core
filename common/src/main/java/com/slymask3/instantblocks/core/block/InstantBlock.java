@@ -4,7 +4,6 @@ import com.slymask3.instantblocks.core.Core;
 import com.slymask3.instantblocks.core.builder.Builder;
 import com.slymask3.instantblocks.core.util.ClientHelper;
 import com.slymask3.instantblocks.core.util.Helper;
-import com.slymask3.instantblocks.core.util.WandHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -108,7 +107,7 @@ public abstract class InstantBlock extends Block {
 
 			ItemStack is = player.getItemInHand(hand);
 			if(Core.CONFIG.USE_WANDS()) {
-				if(!WandHelper.isWand(is)) {
+				if(!Helper.isWand(is)) {
 					Helper.sendMessage(player, Core.Strings.ERROR_WAND);
 					return InteractionResult.FAIL;
 				}
@@ -138,7 +137,7 @@ public abstract class InstantBlock extends Block {
 
 		ItemStack is = player.getItemInHand(hand);
 		if(Core.CONFIG.USE_WANDS()) {
-			if(!WandHelper.isWand(is)) {
+			if(!Helper.isWand(is)) {
 				Helper.sendMessage(player, Core.Strings.ERROR_WAND);
 				return InteractionResult.FAIL;
 			}

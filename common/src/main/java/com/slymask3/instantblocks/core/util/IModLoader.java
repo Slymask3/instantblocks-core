@@ -10,7 +10,7 @@ public interface IModLoader {
     String getKey(Item item);
     TagKey<Item> getItemTagKey(String string);
     TagKey<Block> getBlockTagKey(String string);
-    void getItemsByTag(TagKey<?> tag, ItemCallable itemCallable);
+    void forEachItem(TagKey<?> tag, ItemCallable itemCallable);
 
     interface ItemCallable {
         void call(Item item);
