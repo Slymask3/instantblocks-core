@@ -29,6 +29,7 @@ public class Core {
     public static void init() {
         Helper.createDirectory(CONFIG_DIR);
         CONFIG = new IConfig(){};
+        FUEL = new Fuel();
     }
 
     public static class Strings {
